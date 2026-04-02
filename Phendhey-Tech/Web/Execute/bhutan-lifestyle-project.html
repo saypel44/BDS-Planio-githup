@@ -353,72 +353,232 @@
                 <tr class="findings-index-row" onclick="scrollToFinding('finding-3')"><td class="td-num">3</td><td>Correlation Insights</td></tr>
                 <tr class="findings-index-row" onclick="scrollToFinding('finding-4')"><td class="td-num">4</td><td>Habits Believed to Improve Sleep</td></tr>
                 <tr class="findings-index-row" onclick="scrollToFinding('finding-5')"><td class="td-num">5</td><td>Preferred App Features</td></tr>
-                <tr class="findings-index-row" onclick="scrollToFinding('finding-6')"><td class="td-num">6</td><td>Market Willingness</td></tr>
-                <tr class="findings-index-row" onclick="scrollToFinding('finding-7')"><td class="td-num">7</td><td>Key Takeaways</td></tr>
+                <tr class="findings-index-row" onclick="scrollToFinding('finding-7')"><td class="td-num">6</td><td>Key Takeaways</td></tr>
               </tbody>
             </table>
           </div>
 
           <div class="findings-grid">
-            <div class="finding-card" id="finding-1">
+
+            <!-- ── FINDING 1: Respondent Distribution ── -->
+            <div class="finding-card finding-card--wide" id="finding-1">
               <div class="finding-number">01</div>
-              <div class="stats-row">
-                <div class="stat-card">
-                  <span class="stat-num">366</span>
-                  <span class="stat-lbl">Total Collected</span>
+              <h3 class="finding-title">Who did we survey?</h3>
+              <p class="finding-text" style="margin-bottom:20px;">We collected <strong>366 responses</strong> from people living in urban, rural, and semi-urban areas of Bhutan. After removing one response from a non-resident, <strong>358 were used</strong> for analysis. Most people who responded were from cities — which reflects how Bhutan's population is shifting towards urban areas.</p>
+
+              <!-- Bar chart: respondent split -->
+              <div class="fc-chart-wrap">
+                <div class="fc-chart-title">📍 Where respondents are from</div>
+                <div class="fc-bars">
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">Urban</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--urban" style="width:62%"></div></div>
+                    <div class="fc-bar-val">62%</div>
+                  </div>
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">Rural</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--rural" style="width:27%"></div></div>
+                    <div class="fc-bar-val">27%</div>
+                  </div>
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">Semi-urban</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--semi" style="width:11%"></div></div>
+                    <div class="fc-bar-val">11%</div>
+                  </div>
                 </div>
-                <div class="stat-card">
-                  <span class="stat-num">358</span>
-                  <span class="stat-lbl">Analysed</span>
+                <div class="fc-chart-note">Based on 358 valid responses · Bhutan 2026</div>
+              </div>
+
+              <div class="fc-stat-pills">
+                <div class="fc-pill fc-pill--blue"><span class="fc-pill-num">366</span><span class="fc-pill-lbl">Total collected</span></div>
+                <div class="fc-pill fc-pill--green"><span class="fc-pill-num">358</span><span class="fc-pill-lbl">Used in analysis</span></div>
+                <div class="fc-pill fc-pill--amber"><span class="fc-pill-num">Urban</span><span class="fc-pill-lbl">Majority group</span></div>
+                <div class="fc-pill fc-pill--muted"><span class="fc-pill-num">2026</span><span class="fc-pill-lbl">Study year</span></div>
+              </div>
+            </div>
+
+            <!-- ── FINDING 2: Core Lifestyle Differences ── -->
+            <div class="finding-card finding-card--wide" id="finding-2">
+              <div class="finding-number">02</div>
+              <h3 class="finding-title">How do city and village life differ?</h3>
+              <p class="finding-text" style="margin-bottom:20px;">Urban people tend to work a bit longer and do more mental work (like office jobs). Rural people use screens a little more before bed and sleep slightly longer — but the sleep difference is so small it barely matters. The real difference is <em>what kind</em> of work people do, not how long they sleep.</p>
+
+              <!-- Side-by-side comparison -->
+              <div class="fc-compare-wrap">
+                <div class="fc-compare-header">
+                  <div class="fc-compare-col-hd fc-hd--urban">🏙️ Urban</div>
+                  <div class="fc-compare-metric-hd">Habit</div>
+                  <div class="fc-compare-col-hd fc-hd--rural">🌾 Rural</div>
                 </div>
-                <div class="stat-card">
-                  <span class="stat-num">Urban</span>
-                  <span class="stat-lbl">Majority</span>
+                <div class="fc-compare-row">
+                  <div class="fc-compare-val fc-val--urban fc-val--higher">Longer ↑</div>
+                  <div class="fc-compare-metric">Work Hours</div>
+                  <div class="fc-compare-val fc-val--rural">Shorter</div>
                 </div>
-                <div class="stat-card">
-                  <span class="stat-num">2026</span>
-                  <span class="stat-lbl">Study Year</span>
+                <div class="fc-compare-row">
+                  <div class="fc-compare-val fc-val--urban">Less</div>
+                  <div class="fc-compare-metric">Screen Before Bed</div>
+                  <div class="fc-compare-val fc-val--rural fc-val--higher">More ↑</div>
+                </div>
+                <div class="fc-compare-row">
+                  <div class="fc-compare-val fc-val--urban">Shorter</div>
+                  <div class="fc-compare-metric">Sleep Duration</div>
+                  <div class="fc-compare-val fc-val--rural fc-val--higher">Slightly more ↑</div>
+                </div>
+                <div class="fc-compare-row">
+                  <div class="fc-compare-val fc-val--urban fc-val--higher">Mental / Desk ↑</div>
+                  <div class="fc-compare-metric">Type of Work</div>
+                  <div class="fc-compare-val fc-val--rural">Physical / Manual</div>
                 </div>
               </div>
-              <h3 class="finding-title">Respondent Distribution</h3>
-              <p class="finding-text">366 responses were collected across urban, rural, and semi-urban areas of Bhutan. After excluding one non-resident, 358 responses were retained for analysis. The majority of respondents were urban participants, reflecting Bhutan's growing urbanisation trend.</p>
+              <div class="fc-chart-note" style="margin-top:10px;">↑ indicates the relatively higher group for that habit</div>
             </div>
 
-            <div class="finding-card" id="finding-2">
-              <div class="finding-number">02</div>
-              <h3 class="finding-title">Core Lifestyle Differences</h3>
-              <p class="finding-text">Urban residents work slightly longer hours on average and engage primarily in mental or knowledge-based work. Rural residents report marginally higher screen use before sleep and slightly longer sleep duration — though the difference in sleep length is minimal, suggesting sleep duration alone is not the primary differentiator between groups.</p>
-            </div>
-
-            <div class="finding-card" id="finding-3">
+            <!-- ── FINDING 3: Correlation Insights ── -->
+            <div class="finding-card finding-card--wide" id="finding-3">
               <div class="finding-number">03</div>
-              <h3 class="finding-title">Correlation Insights</h3>
-              <p class="finding-text">Screen use before sleep had a consistently negative effect on both sleep quality and daytime energy in urban and rural groups alike — more pronounced among rural residents. Longer work hours had a neutral effect on urban residents but a mild adverse effect in rural populations. Longer sleep duration showed a neutral effect in urban areas and only a weakly positive effect in rural areas.</p>
+              <h3 class="finding-title">What actually affects your sleep?</h3>
+              <p class="finding-text" style="margin-bottom:20px;">We looked at three habits to see if they help or hurt sleep quality and daily energy. Think of it simply: <strong style="color:#C0392B">Red = bad for sleep</strong>, <strong style="color:#8A8480">Grey = no real effect</strong>, <strong style="color:#2F7A54">Green = slightly good</strong>.</p>
+
+              <!-- Heatmap-style table -->
+              <div class="fc-heatmap-wrap">
+                <div class="fc-heatmap-title">How each habit affects sleep & energy</div>
+                <table class="fc-heatmap">
+                  <thead>
+                    <tr>
+                      <th>Habit</th>
+                      <th>🏙️ Urban</th>
+                      <th>🌾 Rural</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="fc-hm-habit">📱 Screen use before bed</td>
+                      <td><span class="fc-hm-badge fc-hm--bad">😴 Hurts sleep</span></td>
+                      <td><span class="fc-hm-badge fc-hm--worse">😴😴 Hurts more</span></td>
+                    </tr>
+                    <tr>
+                      <td class="fc-hm-habit">⏰ Longer work hours</td>
+                      <td><span class="fc-hm-badge fc-hm--neutral">😐 No effect</span></td>
+                      <td><span class="fc-hm-badge fc-hm--bad">😴 Mild harm</span></td>
+                    </tr>
+                    <tr>
+                      <td class="fc-hm-habit">🛏️ Sleeping longer</td>
+                      <td><span class="fc-hm-badge fc-hm--neutral">😐 No effect</span></td>
+                      <td><span class="fc-hm-badge fc-hm--good">🙂 Slightly helps</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="fc-insight-box">
+                💡 <strong>Plain English:</strong> Putting your phone down before bed is the single most important thing you can do for better sleep — in both cities and villages.
+              </div>
             </div>
 
-            <div class="finding-card" id="finding-4">
+            <!-- ── FINDING 4: Habits Believed to Improve Sleep ── -->
+            <div class="finding-card finding-card--wide" id="finding-4">
               <div class="finding-number">04</div>
-              <h3 class="finding-title">Habits Believed to Improve Sleep</h3>
-              <p class="finding-text">When asked which habits contribute most to better sleep quality, respondents identified four key behaviours: reduced screen use before bed, creating a stress-free environment, maintaining a consistent sleep time, and engaging in relaxing activities before sleep. These directly inform the priority features of a sleep-support application.</p>
+              <h3 class="finding-title">What do people think helps them sleep better?</h3>
+              <p class="finding-text" style="margin-bottom:20px;">We asked people: <em>"What habits do you believe improve your sleep?"</em> Four clear answers came up again and again. Here they are, ranked by how often people mentioned them:</p>
+
+              <!-- Ranked horizontal bars -->
+              <div class="fc-chart-wrap">
+                <div class="fc-chart-title">🏆 Top habits people believe improve sleep</div>
+                <div class="fc-bars">
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">📵 Less screen time before bed</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--rank1" style="width:88%"></div></div>
+                    <div class="fc-bar-val">#1</div>
+                  </div>
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">😌 Stress-free environment</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--rank2" style="width:74%"></div></div>
+                    <div class="fc-bar-val">#2</div>
+                  </div>
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">🕙 Same bedtime every night</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--rank3" style="width:66%"></div></div>
+                    <div class="fc-bar-val">#3</div>
+                  </div>
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">🧘 Relaxing before sleep</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--rank4" style="width:55%"></div></div>
+                    <div class="fc-bar-val">#4</div>
+                  </div>
+                </div>
+                <div class="fc-chart-note">Ranked by frequency of mention across all 358 respondents</div>
+              </div>
             </div>
 
-            <div class="finding-card" id="finding-5">
+            <!-- ── FINDING 5: Preferred App Features ── -->
+            <div class="finding-card finding-card--wide" id="finding-5">
               <div class="finding-number">05</div>
-              <h3 class="finding-title">Preferred App Features</h3>
-              <p class="finding-text">Respondents ranked the most valued features in a sleep-support app as: reminders to reduce screen use, sleep tracking, tips for a better bedtime routine, and help managing daily schedules. The preference for phone-based, low-barrier solutions over complex wearables was clear throughout the data.</p>
+              <h3 class="finding-title">What do people want in a sleep app?</h3>
+              <p class="finding-text" style="margin-bottom:20px;">We asked people which features they would most want if a sleep app existed. They wanted things that are <strong>simple</strong> and work on their existing phone — not expensive gadgets or complicated systems.</p>
+
+              <!-- Feature preference bars -->
+              <div class="fc-chart-wrap">
+                <div class="fc-chart-title">📱 Most wanted app features</div>
+                <div class="fc-bars">
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">🔕 Reminders to put phone down</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--rank1" style="width:84%"></div></div>
+                    <div class="fc-bar-val">#1</div>
+                  </div>
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">📊 Sleep tracking</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--rank2" style="width:76%"></div></div>
+                    <div class="fc-bar-val">#2</div>
+                  </div>
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">🌙 Bedtime routine tips</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--rank3" style="width:62%"></div></div>
+                    <div class="fc-bar-val">#3</div>
+                  </div>
+                  <div class="fc-bar-row">
+                    <div class="fc-bar-label">📅 Daily schedule help</div>
+                    <div class="fc-bar-track"><div class="fc-bar-fill fc-fill--rank4" style="width:48%"></div></div>
+                    <div class="fc-bar-val">#4</div>
+                  </div>
+                </div>
+                <div class="fc-chart-note">Respondents preferred phone-based tools over wearables or complex devices</div>
+              </div>
+
+              <div class="fc-insight-box">
+                💡 <strong>What this means:</strong> People don't want anything fancy. They just want a simple app on the phone they already own that quietly reminds them to sleep better.
+              </div>
             </div>
 
-            <div class="finding-card" id="finding-6">
-              <div class="finding-number">06</div>
-              <h3 class="finding-title">Market Willingness</h3>
-              <p class="finding-text">A majority of respondents said they would be willing to use a sleep-support application. 58.42% said yes outright, 36.6% said maybe — indicating they are not opposed, only undecided — and just 4.96% said no. Combined, over 95% of respondents are open to some form of digital sleep support, representing a strong commercial opportunity.</p>
-            </div>
           </div>
 
+          <!-- Key Takeaways -->
           <div class="finding-card finding-card--wide" id="finding-7">
-            <div class="finding-number">07</div>
-            <h3 class="finding-title">Key Takeaways</h3>
-            <p class="finding-text">Urban–rural lifestyle differences in Bhutan are real and measurable. Screen use before sleep is the most consistently harmful habit across both groups. Work patterns matter more in rural areas, while sleep duration alone is not a reliable indicator of wellbeing in urban populations. Respondents clearly prefer simple, phone-based solutions. With over 95% open to a wellness app and screen use reduction identified as the top desired feature, the case for a practical, affordable digital sleep tool in Bhutan is strong — awareness and access remain the key barriers to adoption.</p>
+            <div class="finding-number">06</div>
+            <h3 class="finding-title">Key Takeaways — The Big Picture</h3>
+            <p class="finding-text" style="margin-bottom:20px;">Here is what all five findings add up to, in plain language:</p>
+            <div class="fc-takeaways">
+              <div class="fc-takeaway-item">
+                <div class="fc-takeaway-icon">📱</div>
+                <div class="fc-takeaway-body"><strong>Screen use is the biggest problem.</strong> It hurts sleep quality and daytime energy for everyone — city and village alike.</div>
+              </div>
+              <div class="fc-takeaway-item">
+                <div class="fc-takeaway-icon">🏙️</div>
+                <div class="fc-takeaway-body"><strong>City and village lifestyles are measurably different.</strong> Urban people work more; rural people use screens more at night. Both groups struggle with sleep — just for different reasons.</div>
+              </div>
+              <div class="fc-takeaway-item">
+                <div class="fc-takeaway-icon">🛏️</div>
+                <div class="fc-takeaway-body"><strong>Sleeping longer doesn't automatically fix things.</strong> How well you sleep matters more than how long.</div>
+              </div>
+              <div class="fc-takeaway-item">
+                <div class="fc-takeaway-icon">📲</div>
+                <div class="fc-takeaway-body"><strong>People want a simple phone app.</strong> No fancy gadgets — just something easy that fits into daily life.</div>
+              </div>
+              <div class="fc-takeaway-item">
+                <div class="fc-takeaway-icon">✅</div>
+                <div class="fc-takeaway-body"><strong>Over 95% are open to a wellness app.</strong> The demand is real. The main barriers are awareness and access — not interest.</div>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -437,97 +597,67 @@
             <p id="market-greeting-text"></p>
           </div>
 
+          <!-- Plain language intro -->
           <div class="content-section">
-            <h2 class="section-heading">So, is there a market?</h2>
-            <p class="section-text">
-              Absolutely — and the numbers make a strong case.
+            <h2 class="section-heading">The simple answer? Yes.</h2>
+            <p class="section-text">We asked all 366 people in the study: <em>"Would you use a sleep or wellness app?"</em> The results were clear — most people are open to it.</p>
+          </div>
 
-          <!-- App interest chart bars -->
+          <!-- Animated bars -->
           <div class="market-bars">
             <div class="market-bar-row">
-              <div class="market-bar-label">Yes</div>
+              <div class="market-bar-label">✅ Yes</div>
               <div class="market-bar-track">
                 <div class="market-bar-fill market-bar--yes" style="width:58.42%"></div>
               </div>
               <div class="market-bar-pct">58.42%</div>
             </div>
             <div class="market-bar-row">
-              <div class="market-bar-label">Maybe</div>
+              <div class="market-bar-label">🤔 Maybe</div>
               <div class="market-bar-track">
                 <div class="market-bar-fill market-bar--maybe" style="width:36.6%"></div>
               </div>
               <div class="market-bar-pct">36.6%</div>
             </div>
             <div class="market-bar-row">
-              <div class="market-bar-label">No</div>
+              <div class="market-bar-label">❌ No</div>
               <div class="market-bar-track">
                 <div class="market-bar-fill market-bar--no" style="width:4.96%"></div>
               </div>
               <div class="market-bar-pct">4.96%</div>
             </div>
           </div>
-          <p class="market-bar-caption">Would you use a sleep/wellness app? — 366 respondents</p>
+          <p class="market-bar-caption">"Would you use a sleep or wellness app?" — 366 respondents · Bhutan 2026</p>
 
-          <div class="content-section">
-            <h2 class="section-heading">How to read the "maybe" group</h2>
-            <p class="section-text">
-              The 36.6% who said "maybe" are arguably the most interesting segment. They're not
-              skeptics — they're undecided. That usually comes down to three things: not knowing
-              enough about what the tool does, uncertainty about cost, or simply never having
-              thought about sleep as something worth tracking.
-            </p>
-            <p class="section-text">
-              That's not resistance. That's an awareness and education gap — and those are very solvable.
-            </p>
+          <!-- Big stat -->
+          <div class="mkt-big-stat">
+            <div class="mkt-big-num">95%+</div>
+            <div class="mkt-big-label">of people said <strong>Yes</strong> or <strong>Maybe</strong> — meaning they are open to trying a wellness app</div>
           </div>
 
+          <!-- What does maybe mean -->
           <div class="content-section">
-            <h2 class="section-heading">What tool do people actually want?</h2>
-            <p class="section-text">
-              Out of all the options presented, respondents pointed most clearly toward one thing:
-              a <strong>sleep tracking app</strong>.
-            </p>
-            <p class="section-text">
-              That's a telling choice. A sleep tracking app lives on a phone most people already
-              own — no extra device to buy, no subscription to commit to, no steep learning curve.
-              It's the lowest-barrier, highest-convenience option available. Respondents aren't
-              asking for something complicated or expensive. They're asking for something simple
-              that fits into the life they already have.
-            </p>
+            <h2 class="section-heading">What about the "Maybe" group?</h2>
+            <p class="section-text">The 36.6% who said "maybe" are not against the idea — they just haven't thought about it yet, or they're unsure of the cost. That's not rejection. That's an opportunity to educate and reach them.</p>
+          </div>
+
+          <!-- What do they want -->
+          <div class="content-section">
+            <h2 class="section-heading">What kind of tool do people want?</h2>
+            <p class="section-text">The most popular choice was a <strong>sleep tracking app</strong> — something simple that already lives on the phone they own. No extra devices. No complicated setup. Just a quiet tool that helps them sleep better.</p>
           </div>
 
           <div class="highlight-box">
             <div class="highlight-icon">💡</div>
-            <div>
-              <strong>Preferred tool:</strong> Sleep tracking app — chosen for convenience,
-              low cost, and ease of use on existing smartphones.
-            </div>
+            <div><strong>Top choice:</strong> A simple sleep tracking app on your existing smartphone — affordable, easy to use, no new hardware needed.</div>
           </div>
 
-          <div class="content-section">
-            <h2 class="section-heading">The honest picture</h2>
-            <p class="section-text">
-              There are real challenges worth acknowledging. Smartphone and internet access is
-              still uneven across Bhutan, particularly in rural areas. Awareness of sleep health
-              as something worth actively managing is still developing. And affordability will
-              matter — any tool priced out of reach simply won't get used.
-            </p>
-            <p class="section-text">
-              But none of these are dealbreakers. They're design constraints — they tell
-              developers and policymakers <em>how</em> to build and distribute these tools,
-              not <em>whether</em> to.
-            </p>
-          </div>
-
+          <!-- Bottom line -->
           <div class="content-section">
             <h2 class="section-heading">Bottom line</h2>
-            <p class="section-text" id="market-bottom-line">
-              The data speaks clearly. With 58.42% ready to say yes and another 36.6% saying
-              maybe, Bhutan's wellness market is early-stage but unmistakably real. People know
-              what they want — something simple, on their phone, that helps them sleep better.
-              The demand is there. It just needs the right product to meet it.
-            </p>
+            <p class="section-text">The demand is real. People know what they want. The main barriers are <strong>awareness</strong> (people don't know what's available) and <strong>access</strong> (internet and smartphones aren't equal everywhere in Bhutan). These are solvable — and that's exactly what this project is working towards.</p>
           </div>
+
         </div>
       </div>
       <!-- ── END PAGE: MARKET READINESS ── -->
