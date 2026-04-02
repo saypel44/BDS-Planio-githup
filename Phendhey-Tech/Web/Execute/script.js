@@ -108,7 +108,7 @@ function setGreetingCards(name, greet) {
 }
 
 // ── Pages that are live (others show "Coming Soon") ───────────────────────
-const LIVE_PAGES = ['home'];
+const LIVE_PAGES = ['home', 'about'];
 
 // ── Navigation ─────────────────────────────────────────────────────────────
 function navigateTo(pageId, btn) {

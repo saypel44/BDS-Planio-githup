@@ -1139,6 +1139,156 @@ body::before {
   .mission-focus-row { flex-direction: column; }
 }
 /* ══════════════════════════════════════
+   HOME HERO PAGE
+══════════════════════════════════════ */
+.home-hero-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 48px);
+  padding-top: 56px;
+  padding-bottom: 64px;
+}
+
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: heroFadeUp 0.6s 0.1s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+.hero-eyebrow-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%      { opacity:0.5; transform:scale(0.75); }
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: heroFadeUp 0.65s 0.2s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.hero-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.hero-tagline {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--muted);
+  font-style: italic;
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: heroFadeUp 0.65s 0.3s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+/* Bio card */
+.hero-bio-card {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  background: linear-gradient(145deg, #FFFDF7 0%, #FFF6DC 100%);
+  border: 1.5px solid rgba(201,104,15,0.2);
+  border-radius: var(--radius);
+  padding: 28px 28px 28px;
+  margin-bottom: 40px;
+  box-shadow: var(--shadow-sm);
+  opacity: 0;
+  animation: heroFadeUp 0.65s 0.4s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.hero-bio-avatar {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F5C400, #E8720C);
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(201,104,15,0.3);
+}
+.hero-bio-body { flex: 1; min-width: 0; }
+.hero-bio-name {
+  font-size: 0.95rem; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.hero-bio-role {
+  font-size: 0.75rem; color: var(--accent);
+  font-weight: 600; letter-spacing: 0.01em;
+  margin-bottom: 12px;
+}
+.hero-bio-text {
+  font-size: 0.88rem; color: var(--text2);
+  line-height: 1.78;
+}
+
+
+@keyframes heroFadeUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .hero-bio-card { flex-direction: column; align-items: flex-start; }
+  .hero-nav-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 400px) {
+  .hero-nav-grid { grid-template-columns: 1fr; }
+}
+
+/* ══════════════════════════════════════
+   ABOUT PAGE SECTION DIVIDER
+══════════════════════════════════════ */
+.about-section-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 48px 0 36px;
+}
+.about-section-divider::before,
+.about-section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, var(--border2));
+}
+.about-section-divider::after {
+  background: linear-gradient(90deg, var(--border2), transparent);
+}
+.about-section-divider span {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+  padding: 5px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+}
+
+/* ══════════════════════════════════════
    COMING SOON OVERLAY
 ══════════════════════════════════════ */
 #coming-soon-overlay {
@@ -1235,10 +1385,10 @@ body::before {
 }
 .cs-btn:active { transform: translateY(0); }
 
-/* dim non-home nav items */
-.nav-item[data-page]:not([data-page="home"]) {
+/* dim non-live nav items */
+.nav-item[data-page]:not([data-page="home"]):not([data-page="about"]) {
   opacity: 0.55;
 }
-.nav-item[data-page]:not([data-page="home"]):hover {
+.nav-item[data-page]:not([data-page="home"]):not([data-page="about"]):hover {
   opacity: 0.85;
 }
