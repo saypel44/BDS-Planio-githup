@@ -2,6 +2,15 @@
 
 let visitorName = '';
 
+// ── Toggle PDF/preview viewer ──────────────────────────────────────────────
+function togglePdfReader(viewerId, btn) {
+  const viewer = document.getElementById(viewerId);
+  if (!viewer) return;
+  const isOpen = viewer.style.display !== 'none';
+  viewer.style.display = isOpen ? 'none' : 'block';
+  if (btn) btn.classList.toggle('prc-toggle-btn--active', !isOpen);
+}
+
 // ── Show home section (tabs) ───────────────────────────────────────────────
 function showHomeSection(sectionId, btn) {
   document.querySelectorAll('.home-section').forEach(s => s.classList.remove('active'));
@@ -108,7 +117,7 @@ function setGreetingCards(name, greet) {
 }
 
 // ── Pages that are live (others show "Coming Soon") ───────────────────────
-const LIVE_PAGES = ['home', 'about'];
+const LIVE_PAGES = ['home', 'about', 'findings', 'market', 'tableau', 'report', 'products'];
 
 // ── Navigation ─────────────────────────────────────────────────────────────
 function navigateTo(pageId, btn) {

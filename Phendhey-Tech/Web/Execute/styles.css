@@ -1392,3 +1392,136 @@ body::before {
 .nav-item[data-page]:not([data-page="home"]):not([data-page="about"]):hover {
   opacity: 0.85;
 }
+/* ── Project Resource Cards (Report + Tableau) ─────────────────────────── */
+.project-resource-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 18px;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.project-resource-card:hover {
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+}
+.prc-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  flex-wrap: wrap;
+}
+.prc-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(var(--accent-rgb, 99,102,241), 0.1);
+  color: var(--accent, #6366f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.prc-icon--tableau {
+  background: rgba(31,119,180,0.1);
+  color: #1f77b4;
+}
+.prc-title-area {
+  flex: 1;
+  min-width: 0;
+}
+.prc-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-muted, #888);
+  margin-bottom: 2px;
+}
+.prc-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text, #1a1a2e);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.prc-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.prc-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.prc-toggle-btn:hover,
+.prc-toggle-btn--active {
+  background: var(--accent, #6366f1);
+  border-color: var(--accent, #6366f1);
+  color: #fff;
+}
+.prc-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 7px;
+  border: 1.5px solid #1f77b4;
+  background: transparent;
+  color: #1f77b4;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.prc-download-btn:hover {
+  background: #1f77b4;
+  color: #fff;
+}
+.prc-pdf-viewer {
+  border-top: 1px solid var(--border);
+  background: var(--bg, #f8f8fb);
+}
+.pdf-iframe {
+  width: 100%;
+  height: 560px;
+  border: none;
+  display: block;
+}
+.pdf-placeholder {
+  padding: 36px 24px;
+  text-align: center;
+  color: var(--text-muted, #888);
+}
+.pdf-ph-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+.pdf-ph-text {
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.pdf-ph-hint {
+  font-size: 12px;
+  opacity: .7;
+}
+.pdf-ph-text code, .pdf-ph-hint code {
+  background: rgba(0,0,0,0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 11px;
+}
