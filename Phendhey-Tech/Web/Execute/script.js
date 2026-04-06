@@ -196,13 +196,17 @@ function closeComingSoon() {
 let barsAnimated = false;
 
 function animateMarketBars() {
-  // Always re-animate when page is visited
-  const bars = document.querySelectorAll('.market-bar-fill');
+  // Animate both old .market-bar-fill and new .mkt-card-bar-fill
+  const bars = document.querySelectorAll('.market-bar-fill, .mkt-card-bar-fill');
   bars.forEach(bar => {
     const target = bar.getAttribute('data-target');
     if (target) {
       bar.style.width = '0';
-      setTimeout(() => { bar.style.width = target + '%'; }, 50);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          bar.style.width = target + '%';
+        });
+      });
     }
   });
 }
@@ -258,16 +262,4 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// ── On DOM ready: prep bar data-targets ───────────────────────────────────
-document.addEventListener('DOMContentLoaded', function () {
-  // Store target widths as data attributes so we can re-animate
-  const fills = document.querySelectorAll('.market-bar-fill');
-  fills.forEach(fill => {
-    const inlineWidth = fill.style.width; // e.g. "58.42%"
-    if (inlineWidth) {
-      const numVal = parseFloat(inlineWidth);
-      fill.setAttribute('data-target', numVal);
-      fill.style.width = '0'; // reset; animate when page shown
-    }
-  });
-});
+// data-target values are set directly in HTML — no DOM prep needed.
