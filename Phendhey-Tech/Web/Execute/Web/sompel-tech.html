@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SomPel Tech – Sleep & Lifestyle Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--night:#0d1117;--deep:#111827;--card:#1a2333;--card2:#1f2d40;--border:rgba(99,179,237,0.15);--accent:#63b3ed;--accent2:#a78bfa;--accent3:#34d399;--moon:#fbbf24;--text:#e2e8f0;--muted:#94a3b8;--soft:#cbd5e1;--danger:#f87171;--r:14px;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--night);color:var(--text);min-height:100vh;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 10%,rgba(99,179,237,0.06),transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(167,139,250,0.06),transparent 60%);pointer-events:none;z-index:0;}
+
+  nav{position:sticky;top:0;z-index:100;background:rgba(13,17,23,0.93);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;height:64px;gap:1rem;}
+  .nav-left{display:flex;align-items:center;gap:.7rem;flex-shrink:0;}
+  .logo{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--accent);}
+  .tagline{font-size:.7rem;color:var(--muted);letter-spacing:.08em;}
+  .nav-badge{padding:.22rem .75rem;border-radius:50px;font-size:.7rem;font-weight:600;letter-spacing:.06em;display:none;}
+  .nav-badge.quick{background:rgba(251,191,36,0.12);color:var(--moon);border:1px solid rgba(251,191,36,0.25);display:inline-block;}
+  .nav-badge.full{background:rgba(99,179,237,0.12);color:var(--accent);border:1px solid rgba(99,179,237,0.25);display:inline-block;}
+  .nav-tabs{display:flex;gap:.2rem;flex-wrap:wrap;}
+  .nav-tab{padding:.4rem .85rem;border-radius:7px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:500;background:transparent;color:var(--muted);transition:all .2s;}
+  .nav-tab:hover{color:var(--text);background:rgba(99,179,237,0.08);}
+  .nav-tab.active{color:var(--accent);background:rgba(99,179,237,0.12);}
+  .nav-tab.hidden{display:none;}
+
+  .page{display:none;animation:fadeIn .35s ease;}
+  .page.active{display:block;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* HOME */
+  .hero{text-align:center;padding:64px 2rem 36px;position:relative;z-index:1;}
+  .hero-badge{display:inline-block;padding:.28rem .85rem;border-radius:50px;background:rgba(99,179,237,0.1);border:1px solid rgba(99,179,237,0.25);font-size:.73rem;color:var(--accent);letter-spacing:.08em;margin-bottom:1.3rem;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;margin-bottom:.9rem;background:linear-gradient(135deg,#e2e8f0 0%,#63b3ed 50%,#a78bfa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero p{color:var(--muted);max-width:500px;margin:0 auto 2.2rem;font-size:.98rem;line-height:1.75;}
+  .mode-area{max-width:780px;margin:0 auto;padding:0 2rem 3rem;}
+  .mode-label{text-align:center;font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:1.1rem;}
+  .mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;}
+  @media(max-width:520px){.mode-cards{grid-template-columns:1fr;}}
+  .mode-card{background:var(--card);border:2px solid var(--border);border-radius:var(--r);padding:1.8rem 1.5rem;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
+  .mode-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;opacity:0;transition:opacity .2s;}
+  .mode-card.qc::after{background:linear-gradient(90deg,var(--moon),var(--accent2));}
+  .mode-card.ft::after{background:linear-gradient(90deg,var(--accent),var(--accent3));}
+  .mode-card:hover::after,.mode-card.sel::after{opacity:1;}
+  .mode-card.sel.qc{border-color:var(--moon);background:rgba(251,191,36,0.04);}
+  .mode-card.sel.ft{border-color:var(--accent);background:rgba(99,179,237,0.04);}
+  .mode-card .mi{font-size:2.1rem;margin-bottom:.7rem;}
+  .mode-card h3{font-family:'Playfair Display',serif;font-size:1.12rem;margin-bottom:.45rem;}
+  .mode-card .desc{font-size:.81rem;color:var(--muted);line-height:1.65;margin-bottom:1.1rem;}
+  .feat-list{list-style:none;margin-bottom:1.3rem;}
+  .feat-list li{font-size:.79rem;color:var(--soft);padding:.22rem 0;display:flex;align-items:center;gap:.45rem;}
+  .feat-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+  .qc .feat-dot{background:var(--moon);}
+  .ft .feat-dot{background:var(--accent3);}
+  .start-btn{width:100%;padding:.62rem;border-radius:9px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;transition:all .2s;}
+  .qc .start-btn{background:var(--moon);color:#1a1200;}
+  .qc .start-btn:hover{background:#fcd34d;}
+  .ft .start-btn{background:var(--accent);color:var(--night);}
+  .ft .start-btn:hover{background:#90cdf4;}
+
+  /* LAYOUT */
+  .section{padding:1.8rem 2rem;max-width:940px;margin:0 auto;}
+  .section-title{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:.3rem;}
+  .section-sub{color:var(--muted);font-size:.87rem;margin-bottom:1.8rem;}
+  .back-link{display:inline-flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--muted);cursor:pointer;margin-bottom:1.3rem;transition:color .2s;}
+  .back-link:hover{color:var(--accent);}
+
+  /* STEPS */
+  .steps{display:flex;gap:.35rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+  .step{padding:.28rem .85rem;border-radius:50px;font-size:.73rem;font-weight:600;border:1px solid var(--border);color:var(--muted);}
+  .step.active{border-color:var(--accent);color:var(--accent);background:rgba(99,179,237,0.1);}
+  .step.done{border-color:var(--accent3);color:var(--accent3);background:rgba(52,211,153,0.07);}
+
+  /* CARDS */
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:1.4rem;}
+  .card h3{font-size:.97rem;font-weight:600;margin-bottom:.9rem;color:var(--soft);}
+
+  /* NEXT BANNER */
+  .nb{background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:1.3rem;flex-wrap:wrap;}
+  .nb .nbt{font-size:.86rem;color:var(--soft);}
+  .nb .nbt strong{color:var(--text);}
+  .btn{padding:.58rem 1.3rem;border-radius:9px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.86rem;font-weight:600;transition:all .2s;white-space:nowrap;}
+  .btn-a{background:var(--accent);color:var(--night);}      .btn-a:hover{background:#90cdf4;transform:translateY(-1px);}
+  .btn-g{background:var(--accent3);color:#052e16;}           .btn-g:hover{background:#6ee7b7;transform:translateY(-1px);}
+  .btn-p{background:var(--accent2);color:#fff;}              .btn-p:hover{background:#c4b5fd;transform:translateY(-1px);}
+  .btn-y{background:var(--moon);color:#1a1200;}              .btn-y:hover{background:#fcd34d;transform:translateY(-1px);}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);}  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* INPUTS */
+  .pg{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  @media(max-width:540px){.pg{grid-template-columns:1fr;}}
+  .fg{display:flex;flex-direction:column;gap:.45rem;}
+  .fl{font-size:.8rem;color:var(--muted);font-weight:500;}
+  select,input[type=time]{background:var(--deep);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.88rem;padding:.58rem .85rem;width:100%;outline:none;appearance:none;-webkit-appearance:none;cursor:pointer;transition:border-color .2s;}
+  select:focus,input:focus{border-color:var(--accent);}
+  select option{background:var(--deep);}
+
+  /* TABS */
+  .atabs{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.9rem;}
+  .atab{padding:.32rem .85rem;border-radius:50px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:.79rem;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .atab:hover{border-color:var(--accent);color:var(--accent);}
+  .atab.active{background:rgba(99,179,237,0.14);border-color:var(--accent);color:var(--accent);}
+  .ltabs{display:flex;gap:.4rem;}
+  .ltab{padding:.32rem .85rem;border-radius:50px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:.79rem;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .ltab.active.urban{background:rgba(99,179,237,0.14);border-color:var(--accent);color:var(--accent);}
+  .ltab.active.rural{background:rgba(52,211,153,0.14);border-color:var(--accent3);color:var(--accent3);}
+
+  /* COMPARE */
+  .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:.9rem;margin-top:1.1rem;margin-bottom:1.2rem;}
+  .cstat{background:var(--deep);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;}
+  .csl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.35rem;}
+  .csv{font-family:'Playfair Display',serif;font-size:1.65rem;margin-bottom:.2rem;}
+  .csb{font-size:.73rem;color:var(--accent3);}
+  .cbrow{margin-bottom:.9rem;}
+  .cblabel{display:flex;justify-content:space-between;font-size:.79rem;color:var(--soft);margin-bottom:.3rem;}
+  .btrack{height:7px;border-radius:4px;background:rgba(255,255,255,0.06);overflow:hidden;margin-bottom:3px;}
+  .bfill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.4,0,.2,1);}
+  .by{background:var(--accent);}
+  .bb{background:var(--accent3);}
+
+  /* LIKERT */
+  .lrow{display:flex;align-items:center;gap:.9rem;padding:.8rem 0;border-bottom:1px solid rgba(99,179,237,0.08);flex-wrap:wrap;}
+  .lrow:last-child{border-bottom:none;}
+  .lq{flex:1;min-width:170px;font-size:.86rem;color:var(--soft);}
+  .lscale{display:flex;gap:.35rem;}
+  .lbtn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s;font-family:'DM Sans',sans-serif;}
+  .lbtn:hover{border-color:var(--accent);color:var(--accent);}
+  .lbtn.sel{background:var(--accent);border-color:var(--accent);color:var(--night);}
+  .llabels{display:flex;justify-content:space-between;font-size:.7rem;color:var(--muted);margin-bottom:.45rem;}
+
+  /* LOG FORM */
+  .lfgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.9rem;}
+  @media(max-width:580px){.lfgrid{grid-template-columns:1fr;}}
+  .logbtn{margin-top:1rem;padding:.65rem;border-radius:9px;border:none;cursor:pointer;background:var(--accent);color:var(--night);font-weight:600;font-size:.9rem;font-family:'DM Sans',sans-serif;transition:all .2s;width:100%;}
+  .logbtn:hover{background:#90cdf4;}
+
+  /* LOG TABLE */
+  .ltable{width:100%;border-collapse:collapse;font-size:.83rem;}
+  .ltable th{text-align:left;padding:.55rem .75rem;color:var(--muted);border-bottom:1px solid var(--border);font-weight:500;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;}
+  .ltable td{padding:.65rem .75rem;border-bottom:1px solid rgba(99,179,237,0.06);color:var(--soft);}
+  .ltable tr:last-child td{border-bottom:none;}
+  .pill{display:inline-block;padding:.18rem .55rem;border-radius:4px;font-size:.73rem;font-weight:600;}
+  .pg{background:rgba(52,211,153,0.12);color:var(--accent3);}
+  .po{background:rgba(251,191,36,0.12);color:var(--moon);}
+  .pb{background:rgba(248,113,113,0.12);color:var(--danger);}
+
+  /* ALARM */
+  .arow{display:flex;gap:.9rem;align-items:flex-end;flex-wrap:wrap;}
+  .arow .fg{flex:1;min-width:130px;}
+  .sounds{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.5rem;}
+  .schip{padding:.3rem .85rem;border-radius:50px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:.78rem;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .schip:hover{border-color:var(--accent2);color:var(--accent2);}
+  .schip.active{background:rgba(167,139,250,0.15);border-color:var(--accent2);color:var(--accent2);}
+
+  /* SCORE */
+  .sring{display:flex;align-items:center;gap:1.8rem;flex-wrap:wrap;margin-bottom:1.4rem;}
+  .srw{position:relative;width:112px;height:112px;flex-shrink:0;}
+  .srw svg{transform:rotate(-90deg);}
+  .srw .snum{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.75rem;color:var(--accent);}
+  .srw .snum span{font-size:.68rem;color:var(--muted);font-family:'DM Sans',sans-serif;margin-top:-4px;}
+  .sdetails h3{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.35rem;}
+
+  /* RECS */
+  .rcard{background:var(--card2);border-left:3px solid var(--accent);border-radius:0 var(--r) var(--r) 0;padding:1.1rem 1.4rem;margin-bottom:.9rem;border-top:1px solid var(--border);border-right:1px solid var(--border);border-bottom:1px solid var(--border);}
+  .rcard.warn{border-left-color:var(--moon);}
+  .rcard.crit{border-left-color:var(--danger);}
+  .rcard.good{border-left-color:var(--accent3);}
+  .rbadge{display:inline-block;padding:.13rem .55rem;border-radius:4px;font-size:.7rem;font-weight:600;margin-bottom:.45rem;text-transform:uppercase;letter-spacing:.06em;background:rgba(99,179,237,0.12);color:var(--accent);}
+  .rcard.warn .rbadge{background:rgba(251,191,36,0.12);color:var(--moon);}
+  .rcard.crit .rbadge{background:rgba(248,113,113,0.12);color:var(--danger);}
+  .rcard.good .rbadge{background:rgba(52,211,153,0.12);color:var(--accent3);}
+  .rtitle{font-weight:600;font-size:.93rem;margin-bottom:.28rem;}
+  .rbody{font-size:.84rem;color:var(--muted);line-height:1.65;}
+
+  /* TIPS */
+  .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:.95rem;}
+  .tcard{background:var(--card2);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;}
+  .ticon{font-size:1.45rem;margin-bottom:.55rem;}
+  .tcat{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.35rem;}
+  .tcard h4{font-size:.9rem;font-weight:600;margin-bottom:.35rem;color:var(--soft);}
+  .tcard p{font-size:.81rem;color:var(--muted);line-height:1.65;}
+  .tcard.caffeine .tcat{color:var(--moon);}
+  .tcard.light .tcat{color:var(--accent);}
+  .tcard.temp .tcat{color:var(--accent2);}
+  .tcard.wind .tcat{color:var(--accent3);}
+
+  /* CHART */
+  .ctoggle{display:flex;gap:.4rem;margin-bottom:.9rem;}
+  .cbtn{padding:.32rem .85rem;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:.78rem;font-family:'DM Sans',sans-serif;transition:all .2s;}
+  .cbtn.active{background:rgba(99,179,237,0.12);border-color:var(--accent);color:var(--accent);}
+  canvas{max-width:100%;}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;background:var(--card);border:1px solid var(--accent);border-radius:10px;padding:.75rem 1.3rem;font-size:.86rem;color:var(--accent);box-shadow:0 8px 32px rgba(0,0,0,0.4);transform:translateY(80px);opacity:0;transition:all .32s ease;pointer-events:none;}
+  .toast.show{transform:none;opacity:1;}
+
+  footer{text-align:center;padding:2.2rem 1rem;border-top:1px solid var(--border);color:var(--muted);font-size:.8rem;margin-top:3rem;}
+  footer strong{color:var(--accent);}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-left">
+    <span style="font-size:1.35rem;">🌙</span>
+    <div>
+      <div class="logo">SomPel Tech</div>
+      <div class="tagline">Sleep & Lifestyle · Bhutan</div>
+    </div>
+    <span id="nav-badge" class="nav-badge"></span>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" id="nt-home"      onclick="gp('home')">Home</button>
+    <!-- Quick Check tabs -->
+    <button class="nav-tab hidden" id="nt-qp"  onclick="gp('qp')">① Profile</button>
+    <button class="nav-tab hidden" id="nt-qh"  onclick="gp('qh')">② Habits</button>
+    <button class="nav-tab hidden" id="nt-qr"  onclick="gp('qr')">③ Results</button>
+    <button class="nav-tab hidden" id="nt-qt"  onclick="gp('qt')">④ Tips</button>
+    <!-- Full Tracker tabs -->
+    <button class="nav-tab hidden" id="nt-fp"  onclick="gp('fp')">① Profile</button>
+    <button class="nav-tab hidden" id="nt-fr"  onclick="gp('fr')">② Reminder</button>
+    <button class="nav-tab hidden" id="nt-fh"  onclick="gp('fh')">③ Track</button>
+    <button class="nav-tab hidden" id="nt-fi"  onclick="gp('fi')">④ Insights</button>
+    <button class="nav-tab hidden" id="nt-ft"  onclick="gp('ft')">⑤ Trends</button>
+    <button class="nav-tab hidden" id="nt-ftp" onclick="gp('ftp')">⑥ Tips</button>
+  </div>
+</nav>
+
+<!-- ════════════ HOME ════════════ -->
+<div class="page active" id="pg-home">
+  <div class="hero">
+    <div class="hero-badge">🇧🇹 Built for Urban &amp; Rural Bhutan</div>
+    <h1>Better Sleep.<br>Brighter Days.</h1>
+    <p>SomPel Tech helps you understand and improve your daily habits — personalized to your age, location, and lifestyle.</p>
+  </div>
+  <div class="mode-area">
+    <div class="mode-label">How would you like to use SomPel Tech?</div>
+    <div class="mode-cards">
+
+      <div class="mode-card qc" id="mc-q" onclick="selMode('q')">
+        <div class="mi">⚡</div>
+        <h3>Quick Check</h3>
+        <div class="desc">Fill in your habits once and get personalized recommendations instantly — no ongoing tracking needed.</div>
+        <ul class="feat-list">
+          <li><span class="feat-dot"></span>Age group &amp; location comparison</li>
+          <li><span class="feat-dot"></span>One-time habit log</li>
+          <li><span class="feat-dot"></span>Sleep quality scale</li>
+          <li><span class="feat-dot"></span>Wellness score</li>
+          <li><span class="feat-dot"></span>Personalized recommendations</li>
+          <li><span class="feat-dot"></span>Sleep education tips</li>
+        </ul>
+        <button class="start-btn" onclick="startMode('q');event.stopPropagation()">Start Quick Check →</button>
+      </div>
+
+      <div class="mode-card ft" id="mc-f" onclick="selMode('f')">
+        <div class="mi">📊</div>
+        <h3>Full Tracker</h3>
+        <div class="desc">Log habits daily, set sleep reminders, watch trend graphs, and track your progress week by week.</div>
+        <ul class="feat-list">
+          <li><span class="feat-dot"></span>Age group &amp; location comparison</li>
+          <li><span class="feat-dot"></span>Sleep schedule reminder + alarm sound</li>
+          <li><span class="feat-dot"></span>Daily habit logging</li>
+          <li><span class="feat-dot"></span>Sleep quality scale</li>
+          <li><span class="feat-dot"></span>Wellness score ring</li>
+          <li><span class="feat-dot"></span>Weekly &amp; monthly trend graphs</li>
+          <li><span class="feat-dot"></span>Personalized recommendations</li>
+          <li><span class="feat-dot"></span>Sleep education tips</li>
+        </ul>
+        <button class="start-btn" onclick="startMode('f');event.stopPropagation()">Start Full Tracker →</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ QUICK CHECK ════════════ -->
+
+<!-- QC Step 1: Profile -->
+<div class="page" id="pg-qp">
+  <div class="section">
+    <span class="back-link" onclick="gp('home')">← Back to Home</span>
+    <div class="steps">
+      <div class="step active">1 · Profile</div>
+      <div class="step">2 · Habits</div>
+      <div class="step">3 · Results</div>
+      <div class="step">4 · Tips</div>
+    </div>
+    <h2 class="section-title">Your Profile</h2>
+    <p class="section-sub">Select your age group and residence to see Bhutan benchmarks — then save your profile.</p>
+
+    <div class="card">
+      <h3>👥 Age Group Comparison</h3>
+      <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem;">See how habits compare to people in your age group across Bhutan.</p>
+      <div class="fl" style="margin-bottom:.45rem;">Age Group</div>
+      <div class="atabs" id="q-atabs">
+        <button class="atab active" onclick="setQAge(this,'u18')">Under 18</button>
+        <button class="atab" onclick="setQAge(this,'18-25')">18–25</button>
+        <button class="atab" onclick="setQAge(this,'26-35')">26–35</button>
+        <button class="atab" onclick="setQAge(this,'36-50')">36–50</button>
+        <button class="atab" onclick="setQAge(this,'50+')">50+</button>
+      </div>
+      <div class="fl" style="margin-bottom:.45rem;margin-top:.8rem;">Residence</div>
+      <div class="ltabs" id="q-ltabs">
+        <button class="ltab active urban" onclick="setQLoc(this,'urban')">Urban</button>
+        <button class="ltab" onclick="setQLoc(this,'rural')">Rural</button>
+      </div>
+      <div class="cgrid" id="qcg"></div>
+    </div>
+
+    <div class="card">
+      <h3>📝 Save to Profile</h3>
+      <div class="pg">
+        <div class="fg"><label class="fl">Age Group</label>
+          <select id="qsa" onchange="qSyncAge()">
+            <option value="">Select</option><option value="u18">Under 18</option><option value="18-25">18–25</option><option value="26-35">26–35</option><option value="36-50">36–50</option><option value="50+">50+</option>
+          </select></div>
+        <div class="fg"><label class="fl">Residence</label>
+          <select id="qsl" onchange="qSyncLoc()">
+            <option value="">Select</option><option value="urban">Urban</option><option value="rural">Rural</option>
+          </select></div>
+      </div>
+    </div>
+
+    <div class="nb">
+      <div class="nbt"><strong>Step 1 of 4</strong> — Next: log your habits for today</div>
+      <button class="btn btn-a" onclick="gp('qh')">Next: Log Habits →</button>
+    </div>
+  </div>
+</div>
+
+<!-- QC Step 2: Habits -->
+<div class="page" id="pg-qh">
+  <div class="section">
+    <span class="back-link" onclick="gp('qp')">← Back to Profile</span>
+    <div class="steps">
+      <div class="step done">1 · Profile ✓</div>
+      <div class="step active">2 · Habits</div>
+      <div class="step">3 · Results</div>
+      <div class="step">4 · Tips</div>
+    </div>
+    <h2 class="section-title">Log Your Habits</h2>
+    <p class="section-sub">Fill in today's habits once to unlock your personalized results.</p>
+
+    <div class="card">
+      <h3>📋 Today's Habits</h3>
+      <div class="lfgrid">
+        <div class="fg"><label class="fl">Work Hours Today</label>
+          <select id="qlw"><option value="">Select</option><option value="0-4">0 – 4 hrs</option><option value="5-6">5 – 6 hrs</option><option value="7-8">7 – 8 hrs</option><option value="9+">8 or more / 9+</option></select></div>
+        <div class="fg"><label class="fl">Sleep Hours Last Night</label>
+          <select id="qls"><option value="">Select</option><option value="0-4">0 – 4 hrs</option><option value="5-6">5 – 6 hrs</option><option value="7-8">7 – 8 hrs</option><option value="9+">9+ hrs</option></select></div>
+        <div class="fg"><label class="fl">Screen Time Before Bed</label>
+          <select id="qlsc"><option value="">Select</option><option value="none">No phone before bed</option><option value="30min">Less than 30 min</option><option value="1hr">30 min – 1 hr</option><option value="2hr">1 – 2 hrs</option><option value="3hr">2 – 3 hrs</option><option value="3+hr">More than 3 hrs</option></select></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>😴 Sleep Quality &amp; Energy</h3>
+      <div class="llabels"><span>1 = Strongly Disagree</span><span>5 = Strongly Agree</span></div>
+      <div id="qlic"></div>
+    </div>
+
+    <div class="nb">
+      <div class="nbt"><strong>Step 2 of 4</strong> — Next: see your personalized results</div>
+      <button class="btn btn-g" onclick="submitQ()">See My Results →</button>
+    </div>
+  </div>
+</div>
+
+<!-- QC Step 3: Results -->
+<div class="page" id="pg-qr">
+  <div class="section">
+    <span class="back-link" onclick="gp('qh')">← Back to Habits</span>
+    <div class="steps">
+      <div class="step done">1 · Profile ✓</div>
+      <div class="step done">2 · Habits ✓</div>
+      <div class="step active">3 · Results</div>
+      <div class="step">4 · Tips</div>
+    </div>
+    <h2 class="section-title">Your Results</h2>
+    <p class="section-sub">Personalized recommendations based on your age, location, and habits.</p>
+
+    <div class="card">
+      <h3>🏆 Wellness Score</h3>
+      <div class="sring">
+        <div class="srw">
+          <svg width="112" height="112" viewBox="0 0 112 112">
+            <circle cx="56" cy="56" r="46" fill="none" stroke="rgba(99,179,237,0.1)" stroke-width="9"/>
+            <circle id="qarc" cx="56" cy="56" r="46" fill="none" stroke="var(--accent)" stroke-width="9" stroke-dasharray="289" stroke-dashoffset="289" stroke-linecap="round" style="transition:stroke-dashoffset 1.2s ease;"/>
+          </svg>
+          <div class="snum" id="qsn">—<span>score</span></div>
+        </div>
+        <div class="sdetails"><h3 id="qsl2">Calculating…</h3><p id="qsd" style="color:var(--muted);font-size:.86rem;margin-top:.3rem;"></p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>💡 Personalized Recommendations</h3>
+      <p style="font-size:.83rem;color:var(--muted);margin-bottom:1.1rem;">Tailored to your age group, location, and habits — not generic tips.</p>
+      <div id="qrecs"></div>
+    </div>
+
+    <div class="nb">
+      <div class="nbt"><strong>Step 3 of 4</strong> — Next: read research-backed sleep tips</div>
+      <button class="btn btn-p" onclick="gp('qt')">Next: Sleep Tips →</button>
+    </div>
+    <div class="nb" style="margin-top:.7rem;">
+      <div class="nbt">Want daily tracking &amp; trend graphs? Try the <strong>Full Tracker</strong></div>
+      <button class="btn btn-ghost" onclick="startMode('f')">Switch to Full Tracker →</button>
+    </div>
+  </div>
+</div>
+
+<!-- QC Step 4: Tips -->
+<div class="page" id="pg-qt">
+  <div class="section">
+    <span class="back-link" onclick="gp('qr')">← Back to Results</span>
+    <div class="steps">
+      <div class="step done">1 · Profile ✓</div>
+      <div class="step done">2 · Habits ✓</div>
+      <div class="step done">3 · Results ✓</div>
+      <div class="step active">4 · Tips</div>
+    </div>
+    <h2 class="section-title">Sleep Education Tips</h2>
+    <p class="section-sub">Short, research-backed tips on caffeine, light, temperature, and wind-down routines.</p>
+    <div class="tgrid" id="qt-tips"></div>
+    <div class="nb" style="margin-top:1.8rem;">
+      <div class="nbt">Ready to track your progress over time?</div>
+      <button class="btn btn-a" onclick="startMode('f')">Try Full Tracker →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ FULL TRACKER ════════════ -->
+
+<!-- FT Step 1: Profile -->
+<div class="page" id="pg-fp">
+  <div class="section">
+    <span class="back-link" onclick="gp('home')">← Back to Home</span>
+    <div class="steps">
+      <div class="step active">1 · Profile</div>
+      <div class="step">2 · Reminder</div>
+      <div class="step">3 · Track</div>
+      <div class="step">4 · Insights</div>
+      <div class="step">5 · Trends</div>
+      <div class="step">6 · Tips</div>
+    </div>
+    <h2 class="section-title">Your Profile</h2>
+    <p class="section-sub">Set your age group and residence. We'll use this to personalise your entire experience.</p>
+
+    <div class="card">
+      <h3>👥 Age Group Comparison — Bhutan</h3>
+      <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem;">Understand where you stand and what the healthiest benchmarks look like.</p>
+      <div class="fl" style="margin-bottom:.45rem;">Age Group</div>
+      <div class="atabs" id="f-atabs">
+        <button class="atab active" onclick="setFAge(this,'u18')">Under 18</button>
+        <button class="atab" onclick="setFAge(this,'18-25')">18–25</button>
+        <button class="atab" onclick="setFAge(this,'26-35')">26–35</button>
+        <button class="atab" onclick="setFAge(this,'36-50')">36–50</button>
+        <button class="atab" onclick="setFAge(this,'50+')">50+</button>
+      </div>
+      <div class="fl" style="margin-bottom:.45rem;margin-top:.8rem;">Residence</div>
+      <div class="ltabs" id="f-ltabs">
+        <button class="ltab active urban" onclick="setFLoc(this,'urban')">Urban</button>
+        <button class="ltab" onclick="setFLoc(this,'rural')">Rural</button>
+      </div>
+      <div class="cgrid" id="fcg"></div>
+    </div>
+
+    <div class="card">
+      <h3>📝 Save to Profile</h3>
+      <div class="pg">
+        <div class="fg"><label class="fl">Age Group</label>
+          <select id="fsa" onchange="fSyncAge()">
+            <option value="">Select</option><option value="u18">Under 18</option><option value="18-25">18–25</option><option value="26-35">26–35</option><option value="36-50">36–50</option><option value="50+">50+</option>
+          </select></div>
+        <div class="fg"><label class="fl">Residence</label>
+          <select id="fsl" onchange="fSyncLoc()">
+            <option value="">Select</option><option value="urban">Urban</option><option value="rural">Rural</option>
+          </select></div>
+      </div>
+    </div>
+
+    <div class="nb">
+      <div class="nbt"><strong>Step 1 of 6</strong> — Next: set your sleep schedule reminder</div>
+      <button class="btn btn-a" onclick="gp('fr')">Next: Set Reminder →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FT Step 2: Reminder -->
+<div class="page" id="pg-fr">
+  <div class="section">
+    <span class="back-link" onclick="gp('fp')">← Back to Profile</span>
+    <div class="steps">
+      <div class="step done">1 · Profile ✓</div>
+      <div class="step active">2 · Reminder</div>
+      <div class="step">3 · Track</div>
+      <div class="step">4 · Insights</div>
+      <div class="step">5 · Trends</div>
+      <div class="step">6 · Tips</div>
+    </div>
+    <h2 class="section-title">Sleep Schedule Reminder</h2>
+    <p class="section-sub">Set a target bedtime and wake time. Choose a sound. Consistent timing is the #1 sleep habit.</p>
+
+    <div class="card">
+      <h3>⏰ Set Your Alarm</h3>
+      <div class="arow">
+        <div class="fg"><label class="fl">Target Bedtime</label><input type="time" id="ab" value="22:00"></div>
+        <div class="fg"><label class="fl">Target Wake Time</label><input type="time" id="aw" value="06:00"></div>
+        <div style="padding-bottom:.05rem;"><button class="btn btn-a" onclick="setAlarm()" style="padding:.58rem 1.1rem;">Set Reminder</button></div>
+      </div>
+      <div style="margin-top:1.1rem;">
+        <div class="fl" style="margin-bottom:.45rem;">Alarm Sound</div>
+        <div class="sounds">
+          <button class="schip active" onclick="pickSound(this,'Gentle Bell')">🔔 Gentle Bell</button>
+          <button class="schip" onclick="pickSound(this,'Nature')">🌿 Nature</button>
+          <button class="schip" onclick="pickSound(this,'Soft Chime')">🎵 Soft Chime</button>
+          <button class="schip" onclick="pickSound(this,'Tibetan Bowl')">🪘 Tibetan Bowl</button>
+        </div>
+      </div>
+      <div id="alarmst" style="margin-top:.9rem;font-size:.81rem;color:var(--accent3);display:none;">✓ Reminder set: <span id="alarmt"></span></div>
+    </div>
+
+    <div class="nb">
+      <div class="nbt"><strong>Step 2 of 6</strong> — Next: log today's habits</div>
+      <button class="btn btn-a" onclick="gp('fh')">Next: Log Habits →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FT Step 3: Track -->
+<div class="page" id="pg-fh">
+  <div class="section">
+    <span class="back-link" onclick="gp('fr')">← Back to Reminder</span>
+    <div class="steps">
+      <div class="step done">1 · Profile ✓</div>
+      <div class="step done">2 · Reminder ✓</div>
+      <div class="step active">3 · Track</div>
+      <div class="step">4 · Insights</div>
+      <div class="step">5 · Trends</div>
+      <div class="step">6 · Tips</div>
+    </div>
+    <h2 class="section-title">Daily Habit Log</h2>
+    <p class="section-sub">Log work hours, screen time, and sleep duration daily. The more you log, the richer your insights.</p>
+
+    <div class="card">
+      <h3>📋 Today's Habits</h3>
+      <div class="lfgrid">
+        <div class="fg"><label class="fl">Work Hours Today</label>
+          <select id="flw"><option value="">Select</option><option value="0-4">0 – 4 hrs</option><option value="5-6">5 – 6 hrs</option><option value="7-8">7 – 8 hrs</option><option value="9+">8 or more / 9+</option></select></div>
+        <div class="fg"><label class="fl">Sleep Hours Last Night</label>
+          <select id="fls"><option value="">Select</option><option value="0-4">0 – 4 hrs</option><option value="5-6">5 – 6 hrs</option><option value="7-8">7 – 8 hrs</option><option value="9+">9+ hrs</option></select></div>
+        <div class="fg"><label class="fl">Screen Time Before Bed</label>
+          <select id="flsc"><option value="">Select</option><option value="none">No phone before bed</option><option value="30min">Less than 30 min</option><option value="1hr">30 min – 1 hr</option><option value="2hr">1 – 2 hrs</option><option value="3hr">2 – 3 hrs</option><option value="3+hr">More than 3 hrs</option></select></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>😴 Sleep Quality &amp; Energy</h3>
+      <div class="llabels"><span>1 = Strongly Disagree</span><span>5 = Strongly Agree</span></div>
+      <div id="flic"></div>
+      <button class="logbtn" onclick="fLog()">✓ Save Today's Log</button>
+    </div>
+
+    <div class="card">
+      <h3>📅 Recent Logs</h3>
+      <div style="overflow-x:auto;">
+        <table class="ltable">
+          <thead><tr><th>Date</th><th>Work</th><th>Sleep</th><th>Screen</th><th>Quality</th></tr></thead>
+          <tbody id="fltb"><tr><td colspan="5" style="color:var(--muted);text-align:center;padding:1.5rem;">No logs yet — save your first entry above.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="nb">
+      <div class="nbt"><strong>Step 3 of 6</strong> — Next: view your wellness score and insights</div>
+      <button class="btn btn-g" onclick="gotoInsights()">Next: View Insights →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FT Step 4: Insights -->
+<div class="page" id="pg-fi">
+  <div class="section">
+    <span class="back-link" onclick="gp('fh')">← Back to Track</span>
+    <div class="steps">
+      <div class="step done">1 · Profile ✓</div>
+      <div class="step done">2 · Reminder ✓</div>
+      <div class="step done">3 · Track ✓</div>
+      <div class="step active">4 · Insights</div>
+      <div class="step">5 · Trends</div>
+      <div class="step">6 · Tips</div>
+    </div>
+    <h2 class="section-title">Insights</h2>
+    <p class="section-sub">Your wellness score, age-group benchmarks, and personalized recommendations.</p>
+
+    <div class="card">
+      <h3>🏆 Wellness Score</h3>
+      <div class="sring">
+        <div class="srw">
+          <svg width="112" height="112" viewBox="0 0 112 112">
+            <circle cx="56" cy="56" r="46" fill="none" stroke="rgba(99,179,237,0.1)" stroke-width="9"/>
+            <circle id="farc" cx="56" cy="56" r="46" fill="none" stroke="var(--accent)" stroke-width="9" stroke-dasharray="289" stroke-dashoffset="289" stroke-linecap="round" style="transition:stroke-dashoffset 1.2s ease;"/>
+          </svg>
+          <div class="snum" id="fsn">—<span>score</span></div>
+        </div>
+        <div class="sdetails"><h3 id="fsl3">Log habits to see your score</h3><p id="fsd" style="color:var(--muted);font-size:.86rem;margin-top:.3rem;">Save at least one day in Step 3 to unlock your wellness score.</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>👥 Age Group Comparison</h3>
+      <div class="cgrid" id="ficg"></div>
+      <div id="fibars"></div>
+    </div>
+
+    <div class="card">
+      <h3>💡 Personalized Recommendations</h3>
+      <p style="font-size:.83rem;color:var(--muted);margin-bottom:1.1rem;">Based on your age group, location, and logged habits — specific actions for your life.</p>
+      <div id="frecs"><p style="color:var(--muted);font-size:.86rem;">Log habits in Step 3 to unlock personalized recommendations.</p></div>
+    </div>
+
+    <div class="nb">
+      <div class="nbt"><strong>Step 4 of 6</strong> — Next: view your weekly and monthly trend graphs</div>
+      <button class="btn btn-p" onclick="gotoTrends()">Next: View Trends →</button>
+    </div>
+    <div class="nb" style="margin-top:.7rem;">
+      <div class="nbt">Keep improving — log another day's habits</div>
+      <button class="btn btn-ghost" onclick="gp('fh')">← Log Another Day</button>
+    </div>
+  </div>
+</div>
+
+<!-- FT Step 5: Trends -->
+<div class="page" id="pg-ft">
+  <div class="section">
+    <span class="back-link" onclick="gp('fi')">← Back to Insights</span>
+    <div class="steps">
+      <div class="step done">1 · Profile ✓</div>
+      <div class="step done">2 · Reminder ✓</div>
+      <div class="step done">3 · Track ✓</div>
+      <div class="step done">4 · Insights ✓</div>
+      <div class="step active">5 · Trends</div>
+      <div class="step">6 · Tips</div>
+    </div>
+    <h2 class="section-title">Trend Graphs</h2>
+    <p class="section-sub">Visual weekly and monthly charts showing your progress. Spot which nights you sleep best.</p>
+
+    <div class="card">
+      <h3>📈 Sleep · Screen Time · Energy</h3>
+      <div class="ctoggle">
+        <button class="cbtn active" onclick="setChart(this,'w')">Weekly</button>
+        <button class="cbtn" onclick="setChart(this,'m')">Monthly</button>
+      </div>
+      <canvas id="tc" height="220"></canvas>
+      <div style="display:flex;gap:1.4rem;margin-top:.7rem;flex-wrap:wrap;">
+        <span style="font-size:.76rem;color:var(--muted);display:flex;align-items:center;gap:.35rem;"><span style="display:inline-block;width:12px;height:4px;border-radius:2px;background:var(--accent)"></span>Sleep (hrs)</span>
+        <span style="font-size:.76rem;color:var(--muted);display:flex;align-items:center;gap:.35rem;"><span style="display:inline-block;width:12px;height:4px;border-radius:2px;background:var(--moon)"></span>Screen (hrs)</span>
+        <span style="font-size:.76rem;color:var(--muted);display:flex;align-items:center;gap:.35rem;"><span style="display:inline-block;width:12px;height:4px;border-radius:2px;background:var(--accent3)"></span>Energy (1–5)</span>
+      </div>
+    </div>
+
+    <div class="nb">
+      <div class="nbt"><strong>Step 5 of 6</strong> — Next: read research-backed sleep tips</div>
+      <button class="btn btn-p" onclick="gp('ftp')">Next: Sleep Tips →</button>
+    </div>
+    <div class="nb" style="margin-top:.7rem;">
+      <div class="nbt">Add more data — log another day</div>
+      <button class="btn btn-ghost" onclick="gp('fh')">← Log Another Day</button>
+    </div>
+  </div>
+</div>
+
+<!-- FT Step 6: Tips -->
+<div class="page" id="pg-ftp">
+  <div class="section">
+    <span class="back-link" onclick="gp('ft')">← Back to Trends</span>
+    <div class="steps">
+      <div class="step done">1 · Profile ✓</div>
+      <div class="step done">2 · Reminder ✓</div>
+      <div class="step done">3 · Track ✓</div>
+      <div class="step done">4 · Insights ✓</div>
+      <div class="step done">5 · Trends ✓</div>
+      <div class="step active">6 · Tips</div>
+    </div>
+    <h2 class="section-title">Sleep Education Tips</h2>
+    <p class="section-sub">Weekly tips on caffeine, light exposure, bedroom temperature, and wind-down routines.</p>
+    <div class="tgrid" id="ft-tips"></div>
+    <div class="nb" style="margin-top:1.8rem;">
+      <div class="nbt">Apply what you've learned — log tomorrow's habits</div>
+      <button class="btn btn-a" onclick="gp('fh')">Log Tomorrow →</button>
+    </div>
+    <div class="nb" style="margin-top:.7rem;">
+      <div class="nbt">Review your progress</div>
+      <button class="btn btn-ghost" onclick="gp('fi')">← Back to Insights</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>🌙 <strong>SomPel Tech</strong> — Supporting healthier sleep for urban and rural Bhutan.</p>
+  <p style="margin-top:.35rem;">Inspired by the stories of Pelmo &amp; Singye.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────
+let qAge='u18', qLoc='urban';
+let fAge='u18', fLoc='urban';
+let chartMode='w', selSound='Gentle Bell';
+const qLA={}, fLA={};
+let fLogs=[];
+
+const BM = {
+  urban:{'u18':{sleep:8.2,screen:2.1,work:3.0,score:74},'18-25':{sleep:7.0,screen:2.8,work:7.2,score:65},'26-35':{sleep:6.5,screen:2.2,work:8.5,score:62},'36-50':{sleep:6.8,screen:1.5,work:8.0,score:68},'50+':{sleep:7.2,screen:0.8,work:5.0,score:72}},
+  rural:{'u18':{sleep:8.8,screen:0.5,work:2.5,score:82},'18-25':{sleep:7.8,screen:0.8,work:6.0,score:78},'26-35':{sleep:7.5,screen:0.6,work:7.0,score:76},'36-50':{sleep:7.8,screen:0.4,work:7.5,score:79},'50+':{sleep:8.0,screen:0.3,work:5.5,score:81}}
+};
+const LQS=[
+  'I go to sleep at the same time every night.',
+  'I fall asleep easily.',
+  'I sleep well most nights.',
+  'I wake up feeling rested.',
+  'I have enough energy during the day.'
+];
+const TIPS=[
+  {cl:'caffeine',ic:'☕',ct:'Caffeine',h:'Cut off caffeine by 2 PM',p:'Caffeine has a half-life of 5–7 hours. A cup of tea at 3 PM still has half its stimulant effect at bedtime — making it harder to fall asleep even if you feel tired.'},
+  {cl:'light',ic:'💡',ct:'Light Exposure',h:'Morning light resets your clock',p:'Exposure to natural light within the first hour of waking sets your circadian rhythm. Even 10 minutes outside helps regulate when you feel sleepy at night.'},
+  {cl:'light',ic:'📵',ct:'Screen Light',h:'Blue light delays melatonin by 3 hours',p:'Phone and laptop screens emit blue light that suppresses melatonin. Dimming screens or using night mode 90 minutes before bed meaningfully improves sleep onset.'},
+  {cl:'temp',ic:'🌡️',ct:'Bedroom Temperature',h:'Cooler rooms = deeper sleep',p:'Your core body temperature drops during sleep. A bedroom between 18–21°C supports this natural process and helps you enter deep sleep more easily.'},
+  {cl:'wind',ic:'🧘',ct:'Wind-Down Routine',h:'Signal sleep with a consistent ritual',p:'Your brain learns to associate cues with sleep. A 20-minute wind-down routine — same time, same order — trains your body to transition automatically.'},
+  {cl:'caffeine',ic:'🥱',ct:'Sleep Consistency',h:'Wake time matters more than bedtime',p:'Keeping a consistent wake time — even on weekends — anchors your sleep cycle more effectively than any supplement.'},
+  {cl:'light',ic:'🚶',ct:'Movement',h:'30 min of movement improves sleep depth',p:'Regular physical activity, even gentle walks, increases slow-wave sleep. Avoid vigorous exercise within 2 hours of bedtime.'},
+  {cl:'temp',ic:'🍽️',ct:'Eating Habits',h:'Avoid heavy meals within 3 hrs of bed',p:'Digestion competes with sleep. Eating late keeps your body metabolically active. A large meal delays and fragments your sleep cycles.'}
+];
+
+// ── INIT ───────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  buildLikert('qlic',qLA,'q');
+  buildLikert('flic',fLA,'f');
+  buildTips('qt-tips');
+  buildTips('ft-tips');
+  renderCG('qcg',qAge,qLoc);
+  renderCG('fcg',fAge,fLoc);
+});
+
+// ── TIPS ───────────────────────────────────────────────
+function buildTips(id){
+  const e=document.getElementById(id);
+  if(!e)return;
+  e.innerHTML=TIPS.map(t=>`<div class="tcard ${t.cl}"><div class="ticon">${t.ic}</div><div class="tcat">${t.ct}</div><h4>${t.h}</h4><p>${t.p}</p></div>`).join('');
+}
+
+// ── LIKERT ─────────────────────────────────────────────
+function buildLikert(id,obj,pfx){
+  const e=document.getElementById(id);if(!e)return;
+  e.innerHTML=LQS.map((q,i)=>`<div class="lrow"><div class="lq">${q}</div><div class="lscale">${[1,2,3,4,5].map(v=>`<button class="lbtn" id="${pfx}l${i}v${v}" onclick="pickL('${pfx}',${i},${v})">${v}</button>`).join('')}</div></div>`).join('');
+}
+function pickL(pfx,qi,v){
+  const obj=pfx==='q'?qLA:fLA; obj[qi]=v;
+  [1,2,3,4,5].forEach(x=>document.getElementById(`${pfx}l${qi}v${x}`)?.classList.toggle('sel',x===v));
+}
+
+// ── NAV ────────────────────────────────────────────────
+const QN=['nt-qp','nt-qh','nt-qr','nt-qt'];
+const FN=['nt-fp','nt-fr','nt-fh','nt-fi','nt-ft','nt-ftp'];
+const pgMap={'home':'nt-home','qp':'nt-qp','qh':'nt-qh','qr':'nt-qr','qt':'nt-qt','fp':'nt-fp','fr':'nt-fr','fh':'nt-fh','fi':'nt-fi','ft':'nt-ft','ftp':'nt-ftp'};
+
+function gp(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('pg-'+id)?.classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(pgMap[id])?.classList.add('active');
+  if(id==='fi'){fUpdateScore();renderCG('ficg',fAge,fLoc);renderBars('fibars',fAge,fLoc);fUpdateRecs();}
+  if(id==='ft'){setTimeout(drawChart,80);}
+  window.scrollTo(0,0);
+}
+
+function selMode(m){
+  document.getElementById('mc-q').classList.toggle('sel',m==='q');
+  document.getElementById('mc-f').classList.toggle('sel',m==='f');
+}
+
+function startMode(m){
+  selMode(m);
+  const badge=document.getElementById('nav-badge');
+  badge.className='nav-badge '+(m==='q'?'quick':'full');
+  badge.textContent=m==='q'?'⚡ Quick Check':'📊 Full Tracker';
+  [...QN,...FN].forEach(id=>document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById('nt-home').classList.remove('active');
+  if(m==='q'){QN.forEach(id=>document.getElementById(id)?.classList.remove('hidden'));gp('qp');}
+  else{FN.forEach(id=>document.getElementById(id)?.classList.remove('hidden'));gp('fp');}
+}
+
+// ── QUICK CHECK AGE/LOC ────────────────────────────────
+function setQAge(el,ag){
+  document.querySelectorAll('#q-atabs .atab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');qAge=ag;
+  document.getElementById('qsa').value=ag;
+  renderCG('qcg',qAge,qLoc);
+}
+function setQLoc(el,loc){
+  document.querySelectorAll('#q-ltabs .ltab').forEach(t=>t.classList.remove('active','urban','rural'));
+  el.classList.add('active',loc);qLoc=loc;
+  document.getElementById('qsl').value=loc;
+  renderCG('qcg',qAge,qLoc);
+}
+function qSyncAge(){const v=document.getElementById('qsa').value;if(v){qAge=v;renderCG('qcg',qAge,qLoc);}}
+function qSyncLoc(){const v=document.getElementById('qsl').value;if(v){qLoc=v;renderCG('qcg',qAge,qLoc);}}
+
+// ── FULL TRACKER AGE/LOC ───────────────────────────────
+function setFAge(el,ag){
+  document.querySelectorAll('#f-atabs .atab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');fAge=ag;
+  document.getElementById('fsa').value=ag;
+  renderCG('fcg',fAge,fLoc);
+}
+function setFLoc(el,loc){
+  document.querySelectorAll('#f-ltabs .ltab').forEach(t=>t.classList.remove('active','urban','rural'));
+  el.classList.add('active',loc);fLoc=loc;
+  document.getElementById('fsl').value=loc;
+  renderCG('fcg',fAge,fLoc);
+}
+function fSyncAge(){const v=document.getElementById('fsa').value;if(v){fAge=v;renderCG('fcg',fAge,fLoc);}}
+function fSyncLoc(){const v=document.getElementById('fsl').value;if(v){fLoc=v;renderCG('fcg',fAge,fLoc);}}
+
+// ── COMPARE STATS ──────────────────────────────────────
+function renderCG(id,ag,loc){
+  const b=BM[loc]?.[ag]||BM.urban['18-25'];
+  const e=document.getElementById(id);if(!e)return;
+  e.innerHTML=`
+    <div class="cstat"><div class="csl">Avg Sleep Hours</div><div class="csv" style="color:var(--accent)">${b.sleep}</div><div class="csb">Healthy benchmark</div></div>
+    <div class="cstat"><div class="csl">Screen Before Bed</div><div class="csv" style="color:var(--moon)">${b.screen}h</div><div class="csb">Avg for group</div></div>
+    <div class="cstat"><div class="csl">Work Hours</div><div class="csv" style="color:var(--accent2)">${b.work}</div><div class="csb">Avg for group</div></div>
+    <div class="cstat"><div class="csl">Wellness Score</div><div class="csv" style="color:var(--accent3)">${b.score}</div><div class="csb">Group average</div></div>`;
+}
+function renderBars(id,ag,loc){
+  const b=BM[loc]?.[ag]||BM.urban['18-25'];
+  const e=document.getElementById(id);if(!e)return;
+  const last=fLogs[0];
+  const us=last?({'0-4':2,'5-6':5.5,'7-8':7.5,'9+':9}[last.sleep]||0):0;
+  const uc=last?({'none':0,'30min':0.25,'1hr':0.75,'2hr':1.5,'3hr':2.5,'3+hr':4}[last.screen]||0):0;
+  const mb=(lbl,you,bench,max,unit)=>`
+    <div class="cbrow">
+      <div class="cblabel"><span>${lbl}</span><span style="color:var(--muted)">You: ${you||'?'} ${unit} · Benchmark: ${bench} ${unit}</span></div>
+      <div class="btrack"><div class="bfill by" style="width:${you?Math.min(100,you/max*100):0}%"></div></div>
+      <div class="btrack"><div class="bfill bb" style="width:${Math.min(100,bench/max*100)}%"></div></div>
+      <div style="display:flex;gap:.9rem;margin-top:.2rem;font-size:.7rem;color:var(--muted)"><span style="color:var(--accent)">■ You</span><span style="color:var(--accent3)">■ Benchmark</span></div>
+    </div>`;
+  e.innerHTML=mb('Sleep Hours',us,b.sleep,10,'hrs')+mb('Screen Before Bed',uc,b.screen,5,'hrs');
+}
+
+// ── SCORE CALC ─────────────────────────────────────────
+function calcScore(log){
+  let s=50;
+  if(log.sleep==='7-8')s+=20;else if(log.sleep==='5-6')s+=5;else if(log.sleep==='9+')s+=12;
+  if(log.screen==='none')s+=15;else if(log.screen==='30min')s+=10;else if(log.screen==='1hr')s+=5;else if(log.screen==='2hr')s-=2;else if(log.screen==='3hr')s-=8;else s-=15;
+  if(log.work==='7-8')s+=5;else if(log.work==='9+')s-=8;else if(log.work==='0-4')s+=8;
+  if(log.q){const q=parseFloat(log.q);s+=Math.round((q-3)*8);}
+  return Math.max(10,Math.min(99,s));
+}
+function ring(arcId,numId,score){
+  const arc=document.getElementById(arcId),num=document.getElementById(numId);
+  if(!arc||!num)return;
+  arc.style.strokeDashoffset=289-(289*score/100);
+  arc.style.stroke=score>=75?'var(--accent3)':score>=55?'var(--moon)':'var(--danger)';
+  num.innerHTML=score+'<span>score</span>';
+}
+function scoreLabel(score){
+  return score>=80?['Excellent','Your sleep habits are outstanding. Keep it up!']:
+         score>=65?['Good','Solid habits. Small tweaks can push you further.']:
+         score>=50?['Fair','Room to improve. Check your recommendations below.']:
+                   ['Needs Work','Your habits are impacting sleep quality. Follow the tips.'];
+}
+
+// ── QUICK SUBMIT ───────────────────────────────────────
+function submitQ(){
+  const w=document.getElementById('qlw').value;
+  const s=document.getElementById('qls').value;
+  const sc=document.getElementById('qlsc').value;
+  if(!w||!s||!sc){showToast('Please fill in all habit fields.');return;}
+  const av=Object.values(qLA);
+  if(av.length<5){showToast('Please answer all 5 sleep quality questions.');return;}
+  const q=(av.reduce((a,b)=>a+b,0)/av.length).toFixed(1);
+  const score=calcScore({work:w,sleep:s,screen:sc,q});
+  gp('qr');
+  setTimeout(()=>{
+    ring('qarc','qsn',score);
+    const[lbl,desc]=scoreLabel(score);
+    document.getElementById('qsl2').textContent=lbl;
+    document.getElementById('qsd').textContent=desc;
+    renderRecs('qrecs',qAge,qLoc,{work:w,sleep:s,screen:sc});
+  },80);
+}
+
+// ── FULL TRACKER LOG ───────────────────────────────────
+function fLog(){
+  const w=document.getElementById('flw').value;
+  const s=document.getElementById('fls').value;
+  const sc=document.getElementById('flsc').value;
+  if(!w||!s||!sc){showToast('Please fill in all habit fields.');return;}
+  const av=Object.values(fLA);
+  if(av.length<5){showToast('Please answer all 5 sleep quality questions.');return;}
+  const q=(av.reduce((a,b)=>a+b,0)/av.length).toFixed(1);
+  fLogs.unshift({date:new Date().toLocaleDateString('en-BT',{day:'numeric',month:'short'}),work:w,sleep:s,screen:sc,quality:q});
+  renderFLogs();showToast('✓ Today\'s habits saved!');
+}
+function renderFLogs(){
+  const tb=document.getElementById('fltb');
+  if(!fLogs.length)return;
+  const sl={'none':'No screen','30min':'<30 min','1hr':'30–60 min','2hr':'1–2 hr','3hr':'2–3 hr','3+hr':'>3 hr'};
+  tb.innerHTML=fLogs.slice(0,7).map(l=>{
+    const q=parseFloat(l.quality);
+    const cl=q>=4?'pg':q>=3?'po':'pb';
+    const ql=q>=4?'Good':q>=3?'Fair':'Poor';
+    return`<tr><td>${l.date}</td><td>${l.work} hrs</td><td>${l.sleep} hrs</td><td>${sl[l.screen]||l.screen}</td><td><span class="pill ${cl}">${ql} (${l.quality})</span></td></tr>`;
+  }).join('');
+}
+function gotoInsights(){gp('fi');}
+function gotoTrends(){gp('ft');setTimeout(drawChart,80);}
+
+function fUpdateScore(){
+  if(!fLogs.length)return;
+  const l=fLogs[0];
+  const score=calcScore({work:l.work,sleep:l.sleep,screen:l.screen,q:l.quality});
+  ring('farc','fsn',score);
+  const[lbl,desc]=scoreLabel(score);
+  document.getElementById('fsl3').textContent=lbl;
+  document.getElementById('fsd').textContent=desc;
+}
+function fUpdateRecs(){renderRecs('frecs',fAge,fLoc,fLogs[0]?{work:fLogs[0].work,sleep:fLogs[0].sleep,screen:fLogs[0].screen}:null);}
+
+// ── RECS ───────────────────────────────────────────────
+function renderRecs(id,age,loc,log){
+  const e=document.getElementById(id);if(!e)return;
+  let items=[];
+  if(log){
+    if(['3hr','3+hr'].includes(log.screen))
+      items.push({cl:'crit',badge:'Critical',h:'Reduce screen time before bed',b:'You\'re using screens 2+ hours before bed. This significantly delays melatonin. Try phone face-down 90 minutes before your target bedtime.'});
+    else if(log.screen==='2hr')
+      items.push({cl:'warn',badge:'Improve',h:'Shorten screen time to under 1 hour',b:'1–2 hours of screen time before bed interferes with sleep onset. Enable night mode after 8 PM and set a phone-down reminder.'});
+    else if(['none','30min'].includes(log.screen))
+      items.push({cl:'good',badge:'Great',h:'Excellent screen discipline!',b:'Low screen time before bed is one of the most impactful sleep habits. Keep it up.'});
+    if(log.sleep==='0-4')
+      items.push({cl:'crit',badge:'Priority',h:'You need significantly more sleep',b:'Sleeping 4 hours or less severely impacts cognitive function. Prioritize a fixed bedtime tonight.'});
+    else if(log.sleep==='5-6')
+      items.push({cl:'warn',badge:'Improve',h:'Aim for 7–8 hours of sleep',b:'You\'re 1–2 hours below the recommendation. Shift bedtime 30 minutes earlier each week until you reach 7–8 hours naturally.'});
+    else if(log.sleep==='7-8')
+      items.push({cl:'good',badge:'Optimal',h:'Sleep duration is on target',b:'You\'re hitting 7–8 hours. Focus now on quality — dark room, cool temperature, and consistent timing deepens your sleep cycles.'});
+    if(log.work==='9+')
+      items.push({cl:'warn',badge:'Balance',h:'Long work hours are impacting recovery',b:'Working 9+ hours compresses wind-down time. Set a clear end-of-work signal — close your laptop and take a brief walk.'});
+  }
+  if(loc==='urban')
+    items.push({cl:'',badge:'Urban Tip',h:'Create a work–wind-down boundary',b:'Urban lifestyles blur work and rest. Designate a time — say 9 PM — after which you don\'t check messages. Use the alarm feature to reinforce this.'});
+  else if(loc==='rural')
+    items.push({cl:'good',badge:'Rural Advantage',h:'Your natural light exposure is a sleep superpower',b:'Rural environments offer more natural light and less light pollution, naturally regulating your circadian rhythm. Maintain your early sleep schedule.'});
+  if(age==='18-25')
+    items.push({cl:'',badge:'18–25',h:'Social media is the #1 sleep disruptor for your age group',b:'Screen time — especially social media — delays sleep by an average of 47 minutes. Consider app timers for social platforms after 9 PM.'});
+  else if(age==='36-50')
+    items.push({cl:'',badge:'36–50',h:'Stress management directly affects sleep quality',b:'Work stress is the leading sleep disruptor for this age group. Try a 5-minute breathing exercise before bed: 4 counts in, 7 hold, 8 out.'});
+  else if(age==='50+')
+    items.push({cl:'',badge:'50+',h:'Sleep architecture changes with age',b:'Older adults naturally spend less time in deep sleep. A consistent schedule, limiting naps to 20 minutes, and morning sunlight help preserve quality.'});
+  if(!items.length){e.innerHTML='<p style="color:var(--accent3);font-size:.86rem;">✓ Your habits look healthy! Keep logging to track progress.</p>';return;}
+  e.innerHTML=items.map(i=>`<div class="rcard ${i.cl}"><div class="rbadge">${i.badge}</div><div class="rtitle">${i.h}</div><div class="rbody">${i.b}</div></div>`).join('');
+}
+
+// ── ALARM ──────────────────────────────────────────────
+function setAlarm(){
+  const bed=document.getElementById('ab').value,wake=document.getElementById('aw').value;
+  if(!bed||!wake){showToast('Please set both bedtime and wake time.');return;}
+  const fmt=t=>{const[h,m]=t.split(':');const ap=+h>=12?'PM':'AM';return`${+h%12||12}:${m} ${ap}`;};
+  document.getElementById('alarmt').textContent=`Bed ${fmt(bed)} · Wake ${fmt(wake)} · ${selSound}`;
+  document.getElementById('alarmst').style.display='block';
+  showToast(`⏰ Reminder set — Bed ${fmt(bed)} · Wake ${fmt(wake)}`);
+}
+function pickSound(el,s){
+  document.querySelectorAll('.schip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');selSound=s;
+}
+
+// ── CHART ──────────────────────────────────────────────
+function setChart(el,m){
+  document.querySelectorAll('.cbtn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');chartMode=m;drawChart();
+}
+function drawChart(){
+  const cv=document.getElementById('tc');if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const W=cv.offsetWidth||800,H=220;
+  cv.width=W;cv.height=H;ctx.clearRect(0,0,W,H);
+  const iw=chartMode==='w';
+  const lbs=iw?['Mon','Tue','Wed','Thu','Fri','Sat','Sun']:['Wk1','Wk2','Wk3','Wk4'];
+  let sd,scd,ed;
+  if(fLogs.length>=2){
+    const rc=iw?fLogs.slice(0,7).reverse():fLogs.slice(0,4).reverse();
+    const ts=v=>({'0-4':2,'5-6':5.5,'7-8':7.5,'9+':9}[v]||6);
+    const tc=v=>({'none':0,'30min':0.3,'1hr':0.8,'2hr':1.5,'3hr':2.5,'3+hr':3.5}[v]||1);
+    sd=rc.map(l=>ts(l.sleep));scd=rc.map(l=>tc(l.screen));ed=rc.map(l=>parseFloat(l.quality));
+    while(sd.length<lbs.length){sd.unshift(null);scd.unshift(null);ed.unshift(null);}
+    sd=sd.slice(-lbs.length);scd=scd.slice(-lbs.length);ed=ed.slice(-lbs.length);
+  }else{
+    sd=iw?[6,5.5,7.5,6,7,8,7.5]:[6.2,6.8,7.2,7.5];
+    scd=iw?[2.5,3,2,1.5,2,0.5,1]:[2.2,1.8,1.4,1.0];
+    ed=iw?[2.8,2.5,3.5,3,3.8,4.2,4]:[3.0,3.4,3.8,4.1];
+  }
+  const p={t:20,r:20,b:30,l:40},cw=W-p.l-p.r,ch=H-p.t-p.b,n=lbs.length;
+  const xs=lbs.map((_,i)=>p.l+(i/(n-1))*cw);
+  ctx.strokeStyle='rgba(99,179,237,0.08)';ctx.lineWidth=1;
+  for(let y=0;y<=4;y++){const yy=p.t+ch*(1-y/4);ctx.beginPath();ctx.moveTo(p.l,yy);ctx.lineTo(p.l+cw,yy);ctx.stroke();ctx.fillStyle='rgba(148,163,184,0.5)';ctx.font='11px DM Sans';ctx.textAlign='right';ctx.fillText(y===0?'0':(y/4*10).toFixed(0)+'h',p.l-6,yy+4);}
+  ctx.fillStyle='rgba(148,163,184,0.7)';ctx.font='11px DM Sans';ctx.textAlign='center';
+  lbs.forEach((l,i)=>ctx.fillText(l,xs[i],H-8));
+  function dl(data,col,mv){
+    if(!data.filter(d=>d!==null).length)return;
+    ctx.strokeStyle=col;ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.lineCap='round';ctx.shadowColor=col;ctx.shadowBlur=8;ctx.beginPath();let first=true;
+    data.forEach((v,i)=>{if(v===null){first=true;return;}const x=xs[i],y=p.t+ch*(1-v/mv);first?ctx.moveTo(x,y):ctx.lineTo(x,y);first=false;});
+    ctx.stroke();ctx.shadowBlur=0;
+    data.forEach((v,i)=>{if(v===null)return;ctx.beginPath();ctx.arc(xs[i],p.t+ch*(1-v/mv),4,0,Math.PI*2);ctx.fillStyle=col;ctx.fill();});
+  }
+  dl(sd,'#63b3ed',10);dl(scd,'#fbbf24',5);dl(ed,'#34d399',5);
+}
+
+// ── TOAST ──────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+window.addEventListener('resize',drawChart);
+</script>
+</body>
+</html>
