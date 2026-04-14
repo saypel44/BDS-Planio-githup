@@ -161,6 +161,42 @@
       font-size: 0.67rem; color: var(--muted);
       padding-top: 10px; border-top: 1px solid var(--border);
     }
+
+    /* ── SP AI Loading Spinner ── */
+    .sp-ai-loading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 14px;
+      background: linear-gradient(135deg, rgba(107,163,104,0.06), rgba(122,171,200,0.06));
+      border: 1.5px solid rgba(107,163,104,0.18);
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    .sp-ai-spinner {
+      width: 20px; height: 20px; flex-shrink: 0;
+      border: 2.5px solid rgba(107,163,104,0.2);
+      border-top-color: var(--green, #6BA368);
+      border-radius: 50%;
+      animation: sp-spin 0.85s linear infinite;
+    }
+    @keyframes sp-spin { to { transform: rotate(360deg); } }
+    .sp-ai-loading-text {
+      font-size: 0.84rem;
+      color: var(--text2, #6A6560);
+      font-style: italic;
+    }
+    .sp-ai-content { animation: cardIn 0.4s cubic-bezier(0.22,1,0.36,1) both; }
+    .sp-ai-content p:first-child {
+      font-size: 0.88rem;
+      color: var(--text2, #6A6560);
+      margin-bottom: 0.9rem;
+      padding: 10px 14px;
+      background: rgba(107,163,104,0.06);
+      border-left: 3px solid var(--green, #6BA368);
+      border-radius: 0 6px 6px 0;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -1179,6 +1215,14 @@
           </div>
           <h2 class="section-title">Sleep Education Tips</h2>
           <p class="section-sub">Short, research-backed tips on caffeine, light, temperature, and wind-down routines.</p>
+          <div class="card" id="qt-ai-tip-card">
+            <h3>✨ Your Personalised Tip of the Week</h3>
+            <div id="qt-ai-tip-loading" class="sp-ai-loading">
+              <div class="sp-ai-spinner"></div>
+              <div class="sp-ai-loading-text">Generating your personalised tip…</div>
+            </div>
+            <div id="qt-ai-tip-content" style="display:none;font-size:.88rem;color:var(--text2,#6A6560);line-height:1.6;"></div>
+          </div>
           <div class="tgrid" id="qt-tips"></div>
           <div class="nb" style="margin-top:1.8rem;">
             <div class="nbt">Ready to track your progress over time?</div>
@@ -1427,6 +1471,14 @@
           </div>
           <h2 class="section-title">Sleep Education Tips</h2>
           <p class="section-sub">Weekly tips on caffeine, light exposure, bedroom temperature, and wind-down routines.</p>
+          <div class="card" id="ft-ai-tip-card">
+            <h3>✨ Your Personalised Tip of the Week</h3>
+            <div id="ft-ai-tip-loading" class="sp-ai-loading">
+              <div class="sp-ai-spinner"></div>
+              <div class="sp-ai-loading-text">Generating your personalised tip…</div>
+            </div>
+            <div id="ft-ai-tip-content" style="display:none;font-size:.88rem;color:var(--text2,#6A6560);line-height:1.6;"></div>
+          </div>
           <div class="tgrid" id="ft-tips"></div>
           <div class="nb" style="margin-top:1.8rem;">
             <div class="nbt">Apply what you've learned — log tomorrow's habits</div>

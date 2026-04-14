@@ -798,6 +798,8 @@ function gp(id) {
   document.getElementById(SP_pgMap[id])?.classList.add('active');
   if (id === 'fi') { spFUpdateScore(); spRenderCG('ficg', spFAge, spFLoc); spRenderBars('fibars', spFAge, spFLoc); spFUpdateRecs(); }
   if (id === 'ft') { setTimeout(drawChart, 80); }
+  if (id === 'qt' && !spQTipGenerated) { spQTipGenerated = true; spGenerateAITip('q'); }
+  if (id === 'ftp' && !spFTipGenerated) { spFTipGenerated = true; spGenerateAITip('f'); }
   const app = document.getElementById('sp-app');
   if (app) app.scrollTop = 0;
   else window.scrollTo(0, 0);
@@ -954,7 +956,7 @@ function submitQ() {
     const [lbl, desc] = spScoreLabel(score);
     const el1 = document.getElementById('qsl2'); if (el1) el1.textContent = lbl;
     const el2 = document.getElementById('qsd');  if (el2) el2.textContent = desc;
-    spRenderRecs('qrecs', spQAge, spQLoc, { work: w, sleep: s, screen: sc });
+    spRenderRecs('qrecs', spQAge, spQLoc, { work: w, sleep: s, screen: sc, q });
   }, 80);
 }
 
@@ -1004,9 +1006,8 @@ function spFUpdateRecs() {
     spFLogs[0] ? { work: spFLogs[0].work, sleep: spFLogs[0].sleep, screen: spFLogs[0].screen } : null);
 }
 
-// ── Recommendations ───────────────────────────────────────────────────────────
-function spRenderRecs(id, age, loc, log) {
-  const e = document.getElementById(id); if (!e) return;
+// ── Static fallback recommendations (used while AI loads or on error) ──────────
+function spStaticRecs(age, loc, log) {
   let items = [];
   if (log) {
     if (['3hr','3+hr'].includes(log.screen))
@@ -1038,16 +1039,163 @@ function spRenderRecs(id, age, loc, log) {
   else if (age === '50+')
     items.push({ cl:'', badge:'50+', h:'Sleep architecture changes with age', b:'Older adults naturally spend less time in deep sleep. A consistent schedule, limiting naps to 20 minutes, and morning sunlight help preserve quality.' });
 
-  if (!items.length) {
-    e.innerHTML = '<p style="color:var(--green);font-size:.86rem;">✓ Your habits look healthy! Keep logging to track progress.</p>';
-    return;
-  }
-  e.innerHTML = items.map(i =>
-    `<div class="rcard ${i.cl}"><div class="rbadge">${i.badge}</div><div class="rtitle">${i.h}</div><div class="rbody">${i.b}</div></div>`
-  ).join('');
+  return items;
 }
 
-// ── Alarm ─────────────────────────────────────────────────────────────────────
+// ── Recommendations (AI-powered with static fallback) ─────────────────────────
+function spRenderRecs(id, age, loc, log) {
+  const e = document.getElementById(id); if (!e) return;
+
+  // Show loading spinner while AI generates
+  e.innerHTML = `
+    <div class="sp-ai-loading" id="${id}-ai-loading">
+      <div class="sp-ai-spinner"></div>
+      <div class="sp-ai-loading-text">✨ Generating your personalised recommendations…</div>
+    </div>
+    <div class="sp-ai-content" id="${id}-ai-content" style="display:none;"></div>`;
+
+  // Start AI fetch
+  spFetchAIRecs(id, age, loc, log);
+}
+
+async function spFetchAIRecs(id, age, loc, log) {
+  const loadingEl = document.getElementById(`${id}-ai-loading`);
+  const contentEl = document.getElementById(`${id}-ai-content`);
+  if (!loadingEl || !contentEl) return;
+
+  const ageLabels = { 'u18':'Under 18','18-25':'18–25','26-35':'26–35','36-50':'36–50','50+':'50+' };
+  const ageLabel  = ageLabels[age] || age;
+  const bm        = SP_BM[loc]?.[age] || SP_BM.urban['18-25'];
+
+  const workLabel   = { '0-4':'0–4 hours','5-6':'5–6 hours','7-8':'7–8 hours','9+':'9+ hours' }[log?.work]   || 'not provided';
+  const sleepLabel  = { '0-4':'0–4 hours','5-6':'5–6 hours','7-8':'7–8 hours','9+':'9+ hours' }[log?.sleep]  || 'not provided';
+  const screenLabel = { 'none':'no phone before bed','30min':'less than 30 minutes','1hr':'30–60 minutes','2hr':'1–2 hours','3hr':'2–3 hours','3+hr':'more than 3 hours' }[log?.screen] || 'not provided';
+
+  // Likert scores
+  const qScores = id.startsWith('q') ? Object.values(spQLA) : Object.values(spFLA);
+  const avgQ = qScores.length ? (qScores.reduce((a,b) => a+b, 0) / qScores.length).toFixed(1) : '3.0';
+  const likertAnswers = [
+    'I go to sleep at the same time every night',
+    'I fall asleep easily',
+    'I sleep well most nights',
+    'I wake up feeling rested',
+    'I have enough energy during the day'
+  ].map((q, i) => `${q}: ${qScores[i] || '?'}/5`).join('; ');
+
+  const prompt = `You are a warm, encouraging wellness advisor for SomPel Tech — a Bhutanese startup helping people improve their sleep and daily wellbeing through data-driven insights. Research from 358 Bhutanese participants guides your advice.
+
+User profile:
+- Name: ${visitorName || 'this person'}
+- Age group: ${ageLabel}
+- Residence: ${loc === 'urban' ? 'Urban (city/town)' : 'Rural (village)'}
+- Work hours today: ${workLabel}
+- Sleep hours last night: ${sleepLabel}
+- Screen use before bed: ${screenLabel}
+- Sleep quality self-report (1=low, 5=high): ${likertAnswers}
+- Average sleep quality score: ${avgQ}/5
+
+Age group benchmarks for ${ageLabel} ${loc} Bhutan:
+- Typical sleep: ${bm.sleep} hours, screen before bed: ${bm.screen} hours, work: ${bm.work} hours, wellness score: ${bm.score}/100
+
+Write a warm, specific, and actionable wellness recommendation in clean HTML. Use this exact structure:
+1. One greeting sentence using their name and acknowledging their specific situation today (1 sentence).
+2. <div class="rcard good"><div class="rbadge">What's Working</div><div class="rtitle">[title]</div><div class="rbody">[specific positive about their habits — reference their actual numbers]</div></div>
+3. Two or three <div class="rcard [crit/warn/good based on urgency]"> cards, each with <div class="rbadge">[topic]</div><div class="rtitle">[specific action headline]</div><div class="rbody">[2–3 sentences: specific, reference their actual data, culturally aware of Bhutan, practical and doable today]</div></div>
+4. One <div class="rcard"> card with class "good" titled "Age Group Insight" giving one specific insight relevant to ${ageLabel} ${loc} Bhutanese people.
+5. A single closing motivational sentence.
+
+Urgency classes: use "crit" for serious concerns, "warn" for moderate, "good" for positive/tips. Reference actual numbers (e.g. "${sleepLabel} vs ${bm.sleep}hr benchmark"). Keep total to 200–250 words. Do NOT use markdown. Output only HTML starting with the greeting.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+    const data = await resp.json();
+    const text = (data.content || []).map(b => b.text || '').join('');
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (contentEl) { contentEl.style.display = 'block'; contentEl.innerHTML = text; }
+  } catch (err) {
+    // Fallback to static recommendations
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (contentEl) {
+      contentEl.style.display = 'block';
+      const items = spStaticRecs(age, loc, log);
+      if (!items.length) {
+        contentEl.innerHTML = '<p style="color:var(--green);font-size:.86rem;">✓ Your habits look healthy! Keep logging to track progress.</p>';
+      } else {
+        contentEl.innerHTML = items.map(i =>
+          `<div class="rcard ${i.cl}"><div class="rbadge">${i.badge}</div><div class="rtitle">${i.h}</div><div class="rbody">${i.b}</div></div>`
+        ).join('');
+      }
+    }
+  }
+}
+
+// ── AI Personalised Tip of the Week ──────────────────────────────────────────
+let spQTipGenerated = false;
+let spFTipGenerated = false;
+
+async function spGenerateAITip(mode) {
+  const isQ = mode === 'q';
+  const loadId = isQ ? 'qt-ai-tip-loading' : 'ft-ai-tip-loading';
+  const contId = isQ ? 'qt-ai-tip-content' : 'ft-ai-tip-content';
+  const loadEl = document.getElementById(loadId);
+  const contEl = document.getElementById(contId);
+  if (!loadEl || !contEl) return;
+
+  const age = isQ ? spQAge : spFAge;
+  const loc = isQ ? spQLoc : spFLoc;
+  const logs = isQ ? null : spFLogs;
+
+  const ageLabels = { 'u18':'Under 18','18-25':'18–25','26-35':'26–35','36-50':'36–50','50+':'50+' };
+  const ageLabel = ageLabels[age] || age;
+
+  // Pick a tip topic based on age/loc pattern
+  const topics = ['caffeine cut-off timing', 'blue light and melatonin', 'bedroom temperature', 'wind-down routine', 'consistent wake time', 'morning sunlight', 'napping rules', 'eating habits before sleep'];
+  const topic = topics[Math.floor(Math.random() * topics.length)];
+
+  const logSummary = logs?.length
+    ? `Their recent average sleep: ${({'0-4':2,'5-6':5.5,'7-8':7.5,'9+':9}[logs[0].sleep]||7)} hrs, screen before bed: ${({'none':0,'30min':0.25,'1hr':0.75,'2hr':1.5,'3hr':2.5,'3+hr':4}[logs[0].screen]||1)} hrs.`
+    : 'No recent logs available.';
+
+  const prompt = `You are a sleep education specialist for SomPel Tech — a Bhutanese wellness startup. Write one short, research-backed sleep tip for a ${ageLabel}-year-old ${loc === 'urban' ? 'urban' : 'rural'} Bhutanese person on the topic: "${topic}".
+
+Context: ${logSummary}
+
+Format in clean HTML:
+- A bold <strong> tip headline (7 words max)
+- 2–3 sentences explaining the science simply and a concrete action they can take tonight or this week
+- A short "Why it matters for you:" line that connects to their age group or ${loc} lifestyle
+
+Keep total under 80 words. Warm, clear, practical. No markdown. No preamble. Start directly with the tip.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+    const data = await resp.json();
+    const text = (data.content || []).map(b => b.text || '').join('');
+    loadEl.style.display = 'none';
+    contEl.style.display = 'block';
+    contEl.innerHTML = text;
+  } catch {
+    loadEl.style.display = 'none';
+    contEl.style.display = 'block';
+    contEl.innerHTML = `<strong>Put your phone away 60 minutes before bed.</strong> Blue light from screens suppresses melatonin production by up to 3 hours, directly delaying sleep onset. Start tonight: set a screen-off reminder at 9 PM. <em>Why it matters for you:</em> ${loc === 'urban' ? 'Urban screen use averages 2+ hours before bed — you can break that cycle.' : 'Even in rural areas, increased phone access is shifting sleep times later.'}`;
+  }
+}
 function setAlarm() {
   const bed  = document.getElementById('ab')?.value;
   const wake = document.getElementById('aw')?.value;
